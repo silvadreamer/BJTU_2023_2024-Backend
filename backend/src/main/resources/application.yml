@@ -23,16 +23,3 @@ spring:
           socketFactory:
             class: javax.net.ssl.SSLSocketFactory
         debug: true
-#    host: smtp.qq.com
-#    protocol: smtp
-#    default-encoding: UTF-8
-#    username: heyh31@qq.com
-#    password: fznsavneigykbgec
-#    test-connection: true
-#    properties:
-#      mail:
-#        smtp:
-#          auth: true
-#          starttls:
-#            enable: true
-#            required: true
