@@ -1,6 +1,9 @@
 package com.bjtu.backend.service.impl.Mail;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bjtu.backend.config.MyRedisConfig;
+import com.bjtu.backend.mapper.User.StudentMapper;
+import com.bjtu.backend.pojo.Users.Student;
 import com.bjtu.backend.service.Mail.SendMailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,10 +21,16 @@ import java.util.concurrent.TimeUnit;
 
 import static com.bjtu.backend.utils.VerCodeGenerateUtil.generateVerCode;
 
+
+/**
+ * 初步设计:仅供学生注册~教师默认有账户
+ */
 @Service
 public class SendMailServiceImpl implements SendMailService
 {
     final RedisTemplate redisTemplate;
+
+    final StudentMapper studentMapper;
 
     @Resource
     private JavaMailSender mailSender;
@@ -29,20 +38,32 @@ public class SendMailServiceImpl implements SendMailService
     //@Value("${spring.mail.username}")
     private String emailUserName = "heyh2003@qq.com";
 
-    public SendMailServiceImpl(RedisTemplate redisTemplate)
+    public SendMailServiceImpl(RedisTemplate redisTemplate, StudentMapper studentMapper)
     {
         this.redisTemplate = redisTemplate;
+        this.studentMapper = studentMapper;
     }
 
     /**
      * 发送验证码
      * @param id 学号
-     * @return
+     * @return map
      */
     @Override
-    public Map<String, String> sendMail(String id)
+    public Map<String, String> sendMailForRegister(String id)
     {
         Map<String, String> map = new HashMap<>();
+
+        //先检查是否已经注册过了
+        QueryWrapper<Student> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("number", id);
+        Student student = studentMapper.selectOne(queryWrapper);
+        if(student != null)
+        {
+            map.put("status", "用户已存在！");
+            return map;
+        }
+
         String email = id + "@bjtu.edu.cn";
         String title = "请查收验证码";
         try

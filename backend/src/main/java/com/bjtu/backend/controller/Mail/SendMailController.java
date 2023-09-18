@@ -15,7 +15,7 @@ import java.util.Map;
  * @date 2023/9/17 21:46
  */
 
-@RequestMapping("/mail")
+@RequestMapping("/mail/send")
 @RestController
 public class SendMailController
 {
@@ -25,15 +25,19 @@ public class SendMailController
     {
         this.sendMailService = sendMailService;
     }
-    
-    @PostMapping("/send")
-    public Result<?> sendMail(@RequestParam String id)
+
+    @PostMapping("/register")
+    public Result<?> sendMailForRegister(@RequestParam String id)
     {
-        Map<String, String> map = sendMailService.sendMail(id);
+        Map<String, String> map = sendMailService.sendMailForRegister(id);
 
         if(map == null)
         {
             return Result.fail(20001, "发送失败，请稍后再试");
+        }
+        else if(map.get("status").equals("用户已存在"))
+        {
+            return Result.fail(20001, "用户已注册");
         }
 
         return Result.success(map);

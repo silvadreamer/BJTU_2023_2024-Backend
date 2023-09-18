@@ -5,5 +5,5 @@ import java.util.Map;
 
 public interface SendMailService
 {
-    Map<String, String> sendMail(String mail);
+    Map<String, String> sendMailForRegister(String id);
 }

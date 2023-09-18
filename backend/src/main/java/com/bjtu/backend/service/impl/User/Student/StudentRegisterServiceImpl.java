@@ -8,6 +8,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -35,14 +36,15 @@ public class StudentRegisterServiceImpl implements StudentRegisterService
         String number = stu.getNumber();
         QueryWrapper<Student> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("number", number);
+        Map<String, String> map = new HashMap<>();
 
         if(studentMapper.selectOne(queryWrapper) == null)
         {
             stu.setPassword(passwordEncoder.encode(stu.getPassword()));
             studentMapper.insert(stu);
-
+            map.put("status", "注册成功");
+            return map;
         }
-
 
         return null;
     }
