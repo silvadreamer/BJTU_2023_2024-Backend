@@ -8,6 +8,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -30,6 +31,7 @@ public class TeacherRegisterServiceImpl implements TeacherRegisterService
     @Override
     public Map<String, String> register(Teacher teacher)
     {
+        Map<String, String> map = new HashMap<>();
         String number = teacher.getNumber();
         QueryWrapper<Teacher> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("number", number);
@@ -38,9 +40,9 @@ public class TeacherRegisterServiceImpl implements TeacherRegisterService
         {
             teacher.setPassword(passwordEncoder.encode(teacher.getPassword()));
             teacherMapper.insert(teacher);
-
+            map.put("status", "注册成功");
+            return map;
         }
-
 
         return null;
     }
