@@ -3,11 +3,13 @@ package com.bjtu.backend.service.impl.Class;
 import com.bjtu.backend.mapper.ClassMapper;
 import com.bjtu.backend.pojo.Class;
 import com.bjtu.backend.service.Class.RegisterClassService;
+import lombok.Data;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Deprecated
 @Service
 public class RegisterClassServiceImpl implements RegisterClassService
 {

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 
-
+@Deprecated
 @Service
 public class AddClassServiceImpl implements AddClassService
 {

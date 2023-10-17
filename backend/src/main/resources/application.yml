@@ -1,1 +1,25 @@
+server:
+  port: 3000
+#  servlet:
+#    context-path: /api
 
+spring:
+  datasource:
+    username: root
+    password: BJTU2023
+    url: jdbc:mysql://8.130.141.182:3306/backend?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8
+  redis:
+    port: 6379
+    host: 8.130.141.182
+  mail:
+    host: smtp.qq.com
+    username: 1957915633@qq.com
+    password: fznsavneigykbgec
+    default-encoding: UTF-8
+    port: 465
+    properties:
+      mail:
+        smtp:
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+        debug: true

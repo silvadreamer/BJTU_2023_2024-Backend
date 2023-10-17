@@ -13,6 +13,9 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * 学生登录业务实现
+ */
 @Service
 public class StudentLoginServiceImpl implements StudentLoginService
 {
@@ -56,6 +59,5 @@ public class StudentLoginServiceImpl implements StudentLoginService
         }
 
         return null;
-
     }
 }
