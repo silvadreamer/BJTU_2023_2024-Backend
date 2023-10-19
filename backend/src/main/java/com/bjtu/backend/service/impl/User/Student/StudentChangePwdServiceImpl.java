@@ -33,19 +33,29 @@ public class StudentChangePwdServiceImpl implements StudentChangePwdService
     }
 
     @Override
-    public Map<String, String> changePWD(Student student)
+    public Map<String, String> changePWD(Student student, String old_pwd)
     {
-        System.out.println(student.getPassword());
-        String password = passwordEncoder.encode(student.getPassword());
-        UpdateWrapper<Student> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("number", student.getNumber()).set("password", password);
-        studentMapper.update(null, updateWrapper);
+        String number = student.getNumber();
+        QueryWrapper<Student> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("number", number);
+        Student stu = studentMapper.selectOne(queryWrapper);
 
-        Map<String, String> map = new HashMap<>();
-        map.put("status", "修改密码");
+        //先判断旧密码是否正确
+        if(passwordEncoder.matches(old_pwd, stu.getPassword()))
+        {
+            String password = passwordEncoder.encode(student.getPassword());
+            UpdateWrapper<Student> updateWrapper = new UpdateWrapper<>();
+            updateWrapper.eq("number", student.getNumber()).set("password", password);
+            studentMapper.update(null, updateWrapper);
+
+            Map<String, String> map = new HashMap<>();
+            map.put("status", "修改密码");
+
+            return map;
+        }
 
         System.out.println("debug: 修改密码" + student.getNumber());
 
-        return map;
+        return null;
     }
 }

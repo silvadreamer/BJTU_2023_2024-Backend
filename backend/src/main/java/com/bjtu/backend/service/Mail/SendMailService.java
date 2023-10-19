@@ -6,4 +6,6 @@ import java.util.Map;
 public interface SendMailService
 {
     Map<String, String> sendMailForRegister(String id);
+
+    Map<String, String> sendMailForReset(String id);
 }

@@ -42,4 +42,21 @@ public class SendMailController
 
         return Result.success(map);
     }
+
+    @PostMapping("/reset")
+    public Result<?> sendMailForReset(@RequestParam String id)
+    {
+        Map<String, String> map = sendMailService.sendMailForReset(id);
+
+        if(map == null)
+        {
+            return Result.fail(20001, "发送失败，请稍后再试");
+        }
+        else if(map.get("status").equals("用户不存在"))
+        {
+            return Result.fail(20001, "用户不存在");
+        }
+
+        return Result.success(map);
+    }
 }

@@ -20,8 +20,12 @@ import java.util.Map;
 @RequestMapping("/student")
 public class StudentLoginController
 {
-    @Autowired
-    StudentLoginService studentLoginService;
+    final StudentLoginService studentLoginService;
+
+    public StudentLoginController(StudentLoginService studentLoginService)
+    {
+        this.studentLoginService = studentLoginService;
+    }
 
 
     /**

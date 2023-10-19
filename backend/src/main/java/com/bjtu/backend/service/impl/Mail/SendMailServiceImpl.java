@@ -93,4 +93,55 @@ public class SendMailServiceImpl implements SendMailService
         map.put("status", "发送成功");
         return map;
     }
+
+    /**
+     * 重设密码
+     * @param id 学号
+     * @return map
+     */
+    @Override
+    public Map<String, String> sendMailForReset(String id)
+    {
+        Map<String, String> map = new HashMap<>();
+
+        //先检查是否已经注册过了
+        QueryWrapper<Student> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("number", id);
+        Student student = studentMapper.selectOne(queryWrapper);
+
+        if(student == null)
+        {
+            map.put("status", "用户不存在！");
+            return map;
+        }
+
+        String email = id + "@bjtu.edu.cn";
+        String title = "请查收验证码";
+        try
+        {
+            String code = generateVerCode();
+
+            ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
+            valueOperations.set(email, code, 5, TimeUnit.MINUTES);
+
+            String body = code + ", 验证码有效期5分钟";
+
+            MimeMessage mimeMessage = this.mailSender.createMimeMessage();
+            MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
+
+            message.setFrom(emailUserName);
+            message.setTo(email);
+            message.setSubject(title);
+            message.setText(body);
+
+            this.mailSender.send(mimeMessage);
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+
+        map.put("status", "发送成功");
+        return map;
+    }
 }

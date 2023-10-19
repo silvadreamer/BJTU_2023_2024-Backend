@@ -1,11 +1,10 @@
 package com.bjtu.backend.service.User.Student;
 
-
 import com.bjtu.backend.pojo.Users.Student;
 
 import java.util.Map;
 
-public interface StudentChangePwdService
+public interface StudentResetPwdService
 {
-    Map<String, String> changePWD(Student student, String old_pwd);
+    Map<String, String> ResetPwd(Student student);
 }
