@@ -46,7 +46,7 @@ public class StudentLoginServiceImpl implements StudentLoginService
         if(student != null && passwordEncoder.matches(stu.getPassword(),student.getPassword()))
         {
             String key = "user" + UUID.randomUUID();
-            student.setPassword(null);
+            //student.setPassword(null);
             redisTemplate.opsForValue().set(key, student, 60, TimeUnit.MINUTES);
 
             Map<String, String> data = new HashMap<>();

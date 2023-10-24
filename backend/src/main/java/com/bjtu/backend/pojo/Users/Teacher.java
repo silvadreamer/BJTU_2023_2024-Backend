@@ -16,4 +16,5 @@ public class Teacher
     private Integer id;
     private String number;
     private String password;
+    private String name;
 }

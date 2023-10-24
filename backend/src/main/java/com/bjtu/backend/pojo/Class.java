@@ -22,4 +22,5 @@ public class Class
     private Integer num;
     @TableField("current_num")
     private Integer currentNum;
+    private String teacherName;
 }

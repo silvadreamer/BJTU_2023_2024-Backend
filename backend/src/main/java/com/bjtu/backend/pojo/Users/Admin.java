@@ -6,15 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Student
+public class Admin
 {
     @TableId(type = IdType.AUTO)
     private Integer id;
-    private String number;
+    private String username;
     private String password;
-    private String name;
 }
