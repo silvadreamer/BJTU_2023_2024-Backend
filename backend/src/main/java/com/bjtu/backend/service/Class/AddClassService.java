@@ -8,5 +8,5 @@ import java.util.Map;
 
 public interface AddClassService
 {
-    Map<String, String> addClass(Class classInfo, Student student);
+    Map<String, String> addClass(Class classInfo);
 }

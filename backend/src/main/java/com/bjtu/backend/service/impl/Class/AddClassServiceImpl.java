@@ -5,72 +5,56 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.bjtu.backend.mapper.ClassMapper;
 import com.bjtu.backend.mapper.ClassStudentMapper;
+import com.bjtu.backend.mapper.User.TeacherMapper;
 import com.bjtu.backend.pojo.Class;
 import com.bjtu.backend.pojo.ClassStudent;
 import com.bjtu.backend.pojo.Users.Student;
+import com.bjtu.backend.pojo.Users.Teacher;
 import com.bjtu.backend.service.Class.AddClassService;
+import org.springframework.data.annotation.QueryAnnotation;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Deprecated
 @Service
 public class AddClassServiceImpl implements AddClassService
 {
-    final ClassStudentMapper classStudentMapper;
+    final TeacherMapper teacherMapper;
     final ClassMapper classMapper;
 
-    public AddClassServiceImpl(ClassStudentMapper classStudentMapper,
+    public AddClassServiceImpl(TeacherMapper teacherMapper,
                                ClassMapper classMapper)
     {
-        this.classStudentMapper = classStudentMapper;
+        this.teacherMapper = teacherMapper;
         this.classMapper = classMapper;
     }
 
 
 
     /**
-     * 学生选择课程，class表对应课程加一，选课信息添加新纪录
+     * 管理员添加课程
      * @param classInfo 课程
-     * @param student 选课学生
      * @return map
      */
     @Override
-    public Map<String, String> addClass(Class classInfo, Student student)
+    public Map<String, String> addClass(Class classInfo)
     {
         Map<String, String> map = new HashMap<>();
+        int teacher_id = classInfo.getTeacher();
 
-        int totalNum = classInfo.getNum();
-        int currentNum = classInfo.getCurrentNum();
-        int studentID = student.getId();
-        int classID = classInfo.getId();
+        QueryWrapper<Teacher> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("number", teacher_id);
+        String teacher_name = teacherMapper.selectOne(queryWrapper).getName();
 
-        // 课容量判断
-        if(totalNum == currentNum)
-        {
-            map.put("status", "课程已满");
-            return map;
-        }
+        classInfo.setTeacherName(teacher_name);
+        classInfo.setCurrentNum(0);
 
-        // 判断学生是否已经选过
-        QueryWrapper<ClassStudent> classStudentQueryWrapper = new QueryWrapper<>();
-        classStudentQueryWrapper.eq("student_id", studentID).eq("class_id", classID);
-        if(classStudentMapper.selectOne(classStudentQueryWrapper) != null)
-        {
-            map.put("status", "课程已存在");
-            return map;
-        }
+        classMapper.insert(classInfo);
 
-        // 更新两个表的内容
-        ClassStudent classStudent = new ClassStudent(null, classID, studentID);
-        UpdateWrapper<Class> classUpdateWrapper = new UpdateWrapper<>();
-        classUpdateWrapper.eq("id", classID).setSql("current_num = current_num + 1");
-        classMapper.update(null, classUpdateWrapper);
-        classStudentMapper.insert(classStudent);
-        map.put("status", "选择成功");
+        map.put("status", "添加成功");
 
-        System.out.println("debug: 选课, " + currentNum);
+        System.out.println("debug: 添加课程 ");
 
         return map;
     }

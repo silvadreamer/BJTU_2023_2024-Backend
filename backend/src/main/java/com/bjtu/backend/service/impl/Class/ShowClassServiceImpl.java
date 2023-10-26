@@ -42,6 +42,8 @@ public class ShowClassServiceImpl implements ShowClassService
         Map<String, Object> info = new HashMap<>();
         info.put("info", class_info);
 
+        System.out.println("debug: 获得课程详细信息 ");
+
         return info;
     }
 }

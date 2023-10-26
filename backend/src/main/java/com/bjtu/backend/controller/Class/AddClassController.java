@@ -32,27 +32,11 @@ public class AddClassController
     }
 
     @PostMapping("/add")
-    public Result<?> addClass(@RequestParam int classID, @RequestParam int student)
+    public Result<?> addClass(@RequestBody Class classInfo)
     {
-        QueryWrapper<Class> queryWrapper = new QueryWrapper<>();
-        QueryWrapper<Student> queryWrapper1 = new QueryWrapper<>();
-        queryWrapper.eq("id", classID);
-        queryWrapper1.eq("id", student);
 
-        Class classInfo = classMapper.selectOne(queryWrapper);
-        Student student1 = studentMapper.selectOne(queryWrapper1);
+        Map<String, String> map = addClassService.addClass(classInfo);
 
-        Map<String, String> map = addClassService.addClass(classInfo, student1);
-
-        if(map.get("status").equals("课程已满"))
-        {
-            return Result.fail(20001, "课程已满");
-        }
-        else if (map.get("status").equals("课程已存在"))
-        {
-            return Result.fail(20001, "重复选择");
-        }
-
-        return Result.success("选课成功");
+        return Result.success(map);
     }
 }

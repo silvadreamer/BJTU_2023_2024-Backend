@@ -32,6 +32,8 @@ public class ModifyClassServiceImpl implements ModifyClassService
         Map<String, String> map = new HashMap<>();
         map.put("status", "更新成功");
 
+        System.out.println("debug: 修改课程 ");
+
         return map;
     }
 }

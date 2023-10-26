@@ -41,6 +41,8 @@ public class DeleteClassServiceImpl implements DeleteClassService
         queryWrapper1.eq("class_id", id);
         classStudentMapper.delete(queryWrapper1);
 
+        System.out.println("debug: 删除课程 ");
+
         return "success";
     }
 }
