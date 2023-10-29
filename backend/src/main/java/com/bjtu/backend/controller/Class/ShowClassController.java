@@ -51,13 +51,6 @@ public class ShowClassController
         QueryWrapper<Class> queryWrapper = new QueryWrapper<>();
         queryWrapper.like(StringUtils.hasLength(name), "name", name);
 
-        //教师姓名需要从教师表中查询工号
-        //        QueryWrapper<Teacher> queryWrapper1 = new QueryWrapper<>();
-        //        queryWrapper1.like(StringUtils.hasLength(teacher), "name", teacher);
-        //        List<Teacher> teachers = teacherMapper.selectList(queryWrapper1);
-        //        List<String> teacherIds = teachers.stream().map(Teacher::getNumber).collect(Collectors.toList());
-        //        queryWrapper.in("teacher", teacherIds);
-
         queryWrapper.like(StringUtils.hasLength(teacher), "teacher_name", teacher);
         queryWrapper.select("id", "name", "num", "teacher_name");
 
@@ -85,4 +78,23 @@ public class ShowClassController
 
         return Result.success(map);
     }
+
+    @GetMapping("/teacherList")
+    public Result<Map<String, Object>> teacherList(@RequestParam String number,
+                                                   @RequestParam(value = "name", required = false) String name,
+                                                   @RequestParam(value = "pageNo", defaultValue = "1") Long pageNo,
+                                                   @RequestParam(value = "pageSize", defaultValue = "10") Long pageSize)
+    {
+        QueryWrapper<Class> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("teacher", number);
+        queryWrapper.like(StringUtils.hasLength(name), "name", name);
+
+        queryWrapper.select("id", "name", "num", "teacher_name", "current_num");
+
+        Page<Class> page = new Page<>(pageNo, pageSize);
+        Map<String, Object> map = showClassService.getList(page, queryWrapper);
+
+        return Result.success(map);
+    }
+
 }

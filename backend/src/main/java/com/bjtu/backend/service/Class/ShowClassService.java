@@ -12,4 +12,5 @@ public interface ShowClassService
     Map<String, Object> getList(Page<Class> page, QueryWrapper<Class> queryWrapper);
 
     Map<String, Object> getInfo(int id);
+
 }

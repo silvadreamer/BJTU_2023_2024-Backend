@@ -27,6 +27,13 @@ public class DeleteClassServiceImpl implements DeleteClassService
     @Override
     public String delete(int id)
     {
+        //删除 学生——课程 表中的数据
+        QueryWrapper<ClassStudent> queryWrapper1 = new QueryWrapper<>();
+        queryWrapper1.eq("class_id", id);
+        classStudentMapper.delete(queryWrapper1);
+
+        //实际上还要删除作业，但目前没有
+
         QueryWrapper<Class> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("id", id);
         if(!classMapper.exists(queryWrapper))
@@ -35,11 +42,6 @@ public class DeleteClassServiceImpl implements DeleteClassService
         }
 
         classMapper.delete(queryWrapper);
-
-        //删除 学生——课程 表中的数据
-        QueryWrapper<ClassStudent> queryWrapper1 = new QueryWrapper<>();
-        queryWrapper1.eq("class_id", id);
-        classStudentMapper.delete(queryWrapper1);
 
         System.out.println("debug: 删除课程 ");
 

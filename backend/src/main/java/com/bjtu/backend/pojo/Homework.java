@@ -7,20 +7,22 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Table;
+import java.util.Date;
 
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ClassStudent
+public class Homework
 {
     @TableId(type = IdType.AUTO)
     private Integer id;
     @TableField("class_id")
     private Integer classId;
-    @TableField("student_id")
-    private Integer studentId;
-
+    private Date start;
+    private Date end;
+    private String content;
+    private Integer resubmit;
+    @TableField("file_name")
+    private String fileName;
 }
