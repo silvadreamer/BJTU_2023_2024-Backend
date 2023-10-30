@@ -3,11 +3,6 @@ package com.bjtu.backend.utils;
 import java.security.SecureRandom;
 import java.util.Random;
 
-/**
- * @author Silva31
- * @version 1.0
- * @date 2023/9/17 21:13
- */
 public class VerCodeGenerateUtil
 {
     private static final String SYMBOLS = "0123456789ABCDEFGHIGKLMNOPQRSTUVWXYZ";

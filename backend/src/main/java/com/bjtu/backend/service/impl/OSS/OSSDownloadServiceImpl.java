@@ -36,6 +36,12 @@ public class OSSDownloadServiceImpl implements OSSDownloadService
     }
 
 
+    /**
+     * 下载附件
+     * @param prefix 前缀
+     * @param fileName 文件名
+     * @return Map
+     */
     @Override
     public Map<String, Object> downloadHomework(String prefix, String fileName)
     {
@@ -44,6 +50,11 @@ public class OSSDownloadServiceImpl implements OSSDownloadService
         return getStringObjectMap(key);
     }
 
+    /**
+     * 下载核心
+     * @param key key
+     * @return Map
+     */
     private Map<String, Object> getStringObjectMap(String key)
     {
         Map<String, Object> map = new HashMap<>();

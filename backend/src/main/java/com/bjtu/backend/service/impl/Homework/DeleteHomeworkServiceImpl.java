@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bjtu.backend.mapper.HomeworkMapper;
 import com.bjtu.backend.pojo.Homework;
 import com.bjtu.backend.service.Homework.DeleteHomeworkService;
+import com.bjtu.backend.utils.TimeGenerateUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -25,6 +26,8 @@ public class DeleteHomeworkServiceImpl implements DeleteHomeworkService
         queryWrapper.eq("id", id);
 
         homeworkMapper.delete(queryWrapper);
+
+        System.out.println(TimeGenerateUtil.getTime() + " 教师删除作业");
 
         return null;
     }

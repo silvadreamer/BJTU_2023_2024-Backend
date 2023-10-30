@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.bjtu.backend.mapper.ClassMapper;
 import com.bjtu.backend.pojo.Class;
 import com.bjtu.backend.service.Class.ModifyClassService;
+import com.bjtu.backend.utils.TimeGenerateUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -32,7 +33,7 @@ public class ModifyClassServiceImpl implements ModifyClassService
         Map<String, String> map = new HashMap<>();
         map.put("status", "更新成功");
 
-        System.out.println("debug: 修改课程 ");
+        System.out.println(TimeGenerateUtil.getTime() + " 修改课程 ");
 
         return map;
     }

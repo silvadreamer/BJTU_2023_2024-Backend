@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bjtu.backend.mapper.HomeworkMapper;
 import com.bjtu.backend.pojo.Homework;
 import com.bjtu.backend.service.Homework.GetInfoHomeworkService;
+import com.bjtu.backend.utils.TimeGenerateUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -44,6 +45,8 @@ public class GetInfoHomeworkServiceImpl implements GetInfoHomeworkService
 
         map.put("info", homework);
         map.put("files", uniquePartsArray);
+
+        System.out.println(TimeGenerateUtil.getTime() + " 获得作业信息");
 
         return map;
     }

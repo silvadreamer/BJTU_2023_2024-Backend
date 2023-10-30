@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bjtu.backend.mapper.User.AdminMapper;
 import com.bjtu.backend.pojo.Users.Admin;
 import com.bjtu.backend.service.User.Admin.AdminLoginService;
+import com.bjtu.backend.utils.TimeGenerateUtil;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -49,7 +50,7 @@ public class AdminLoginServiceImpl implements AdminLoginService
             data.put("number", number);
             data.put("token", key);
 
-            System.out.println("debug: login " + number);
+            System.out.println(TimeGenerateUtil.getTime() + " admin login " + number);
 
             return data;
         }

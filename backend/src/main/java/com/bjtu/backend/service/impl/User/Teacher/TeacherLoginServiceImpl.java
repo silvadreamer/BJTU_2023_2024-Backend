@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bjtu.backend.mapper.User.TeacherMapper;
 import com.bjtu.backend.pojo.Users.Teacher;
 import com.bjtu.backend.service.User.Teacher.TeacherLoginService;
+import com.bjtu.backend.utils.TimeGenerateUtil;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -51,7 +52,7 @@ public class TeacherLoginServiceImpl implements TeacherLoginService
             data.put("number", number);
             data.put("token", key);
 
-            System.out.println("debug: login " + number);
+            System.out.println(TimeGenerateUtil.getTime() + " login " + number);
 
             return data;
         }

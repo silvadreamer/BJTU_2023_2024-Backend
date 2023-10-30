@@ -11,6 +11,7 @@ import com.bjtu.backend.pojo.ClassStudent;
 import com.bjtu.backend.pojo.Users.Student;
 import com.bjtu.backend.pojo.Users.Teacher;
 import com.bjtu.backend.service.Class.AddClassService;
+import com.bjtu.backend.utils.TimeGenerateUtil;
 import org.springframework.data.annotation.QueryAnnotation;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,6 @@ public class AddClassServiceImpl implements AddClassService
         this.teacherMapper = teacherMapper;
         this.classMapper = classMapper;
     }
-
 
 
     /**
@@ -52,9 +52,9 @@ public class AddClassServiceImpl implements AddClassService
 
         classMapper.insert(classInfo);
 
-        map.put("status", "添加成功");
+        map.put("status", "success");
 
-        System.out.println("debug: 添加课程 ");
+        System.out.println(TimeGenerateUtil.getTime() + " 添加课程 ");
 
         return map;
     }

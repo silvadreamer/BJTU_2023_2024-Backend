@@ -6,5 +6,7 @@ import java.util.Map;
 
 public interface SubmitHomeworkService
 {
-    Map<String, String> submit(HomeworkStudent homeworkStudent);
+    Map<String, Object> submit(HomeworkStudent homeworkStudent);
+
+    void addFileName(int id, String fileName);
 }

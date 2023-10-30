@@ -1,15 +1,12 @@
 package com.bjtu.backend.controller.Homework;
 
 import com.bjtu.backend.IO.Result;
-import com.bjtu.backend.controller.OSS.OSSUploadController;
 import com.bjtu.backend.pojo.Homework;
 import com.bjtu.backend.service.Homework.AddHomeworkService;
 import com.bjtu.backend.service.OSS.OSSUploadService;
-import org.apache.logging.log4j.message.ReusableMessage;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Map;
 
 @RestController

@@ -53,7 +53,13 @@ public class OSSUploadServiceImpl implements OSSUploadService
         return getStringStringMap(multipartFile, fileName, key);
     }
 
-
+    /**
+     * 上传核心
+     * @param multipartFile 文件
+     * @param fileName 地址
+     * @param key key
+     * @return Map
+     */
     private Map<String, String> getStringStringMap(MultipartFile multipartFile, String fileName, String key)
     {
         COSClient cosClient = null;

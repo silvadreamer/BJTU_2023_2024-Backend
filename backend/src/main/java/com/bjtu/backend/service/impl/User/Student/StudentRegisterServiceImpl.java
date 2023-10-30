@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bjtu.backend.mapper.User.StudentMapper;
 import com.bjtu.backend.pojo.Users.Student;
 import com.bjtu.backend.service.User.Student.StudentRegisterService;
+import com.bjtu.backend.utils.TimeGenerateUtil;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,8 @@ public class StudentRegisterServiceImpl implements StudentRegisterService
         QueryWrapper<Student> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("number", number);
         Map<String, String> map = new HashMap<>();
+
+        System.out.println(TimeGenerateUtil.getTime() + " 学生注册");
 
         if(studentMapper.selectOne(queryWrapper) == null)
         {

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bjtu.backend.mapper.ClassMapper;
 import com.bjtu.backend.pojo.Class;
 import com.bjtu.backend.service.Class.ShowClassService;
+import com.bjtu.backend.utils.TimeGenerateUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -27,7 +28,7 @@ public class ShowClassServiceImpl implements ShowClassService
 
         map.put("classInfo", classMapper.selectPage(page, queryWrapper));
 
-        System.out.println("debug: get class list ");
+        System.out.println(TimeGenerateUtil.getTime() + " get class list ");
 
         return map;
     }
@@ -42,7 +43,7 @@ public class ShowClassServiceImpl implements ShowClassService
         Map<String, Object> info = new HashMap<>();
         info.put("info", class_info);
 
-        System.out.println("debug: 获得课程详细信息 ");
+        System.out.println(TimeGenerateUtil.getTime() + " 获得课程详细信息 ");
 
         return info;
     }

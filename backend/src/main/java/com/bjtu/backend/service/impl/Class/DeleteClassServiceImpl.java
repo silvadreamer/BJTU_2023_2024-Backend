@@ -6,6 +6,7 @@ import com.bjtu.backend.mapper.ClassStudentMapper;
 import com.bjtu.backend.pojo.Class;
 import com.bjtu.backend.pojo.ClassStudent;
 import com.bjtu.backend.service.Class.DeleteClassService;
+import com.bjtu.backend.utils.TimeGenerateUtil;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +44,7 @@ public class DeleteClassServiceImpl implements DeleteClassService
 
         classMapper.delete(queryWrapper);
 
-        System.out.println("debug: 删除课程 ");
+        System.out.println(TimeGenerateUtil.getTime() + " 删除课程 ");
 
         return "success";
     }

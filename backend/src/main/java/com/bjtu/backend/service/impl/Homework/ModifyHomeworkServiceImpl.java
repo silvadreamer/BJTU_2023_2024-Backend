@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.bjtu.backend.mapper.HomeworkMapper;
 import com.bjtu.backend.pojo.Homework;
 import com.bjtu.backend.service.Homework.ModifyHomeworkService;
+import com.bjtu.backend.utils.TimeGenerateUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -28,6 +29,8 @@ public class ModifyHomeworkServiceImpl implements ModifyHomeworkService
         updateWrapper.eq("id", id);
 
         homeworkMapper.update(homework, updateWrapper);
+
+        System.out.println(TimeGenerateUtil.getTime() + " 修改作业内容");
 
         return null;
     }

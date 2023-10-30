@@ -5,6 +5,7 @@ import com.bjtu.backend.config.MyRedisConfig;
 import com.bjtu.backend.mapper.User.StudentMapper;
 import com.bjtu.backend.pojo.Users.Student;
 import com.bjtu.backend.service.Mail.SendMailService;
+import com.bjtu.backend.utils.TimeGenerateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -52,6 +53,8 @@ public class SendMailServiceImpl implements SendMailService
     @Override
     public Map<String, String> sendMailForRegister(String id)
     {
+        System.out.println(TimeGenerateUtil.getTime() + " 注册邮件");
+
         Map<String, String> map = new HashMap<>();
 
         //先检查是否已经注册过了
@@ -102,6 +105,8 @@ public class SendMailServiceImpl implements SendMailService
     @Override
     public Map<String, String> sendMailForReset(String id)
     {
+        System.out.println(TimeGenerateUtil.getTime() + " 重设密码");
+
         Map<String, String> map = new HashMap<>();
 
         //先检查是否已经注册过了

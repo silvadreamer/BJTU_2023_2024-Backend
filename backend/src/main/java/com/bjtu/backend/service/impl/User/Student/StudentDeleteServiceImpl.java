@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bjtu.backend.mapper.User.StudentMapper;
 import com.bjtu.backend.pojo.Users.Student;
 import com.bjtu.backend.service.User.Student.StudentDeleteService;
+import com.bjtu.backend.utils.TimeGenerateUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -33,7 +34,7 @@ public class StudentDeleteServiceImpl implements StudentDeleteService
         Map<String, String> map = new HashMap<>();
         map.put("status", "删除成功");
 
-        System.out.println("debug: 注销" + number);
+        System.out.println(TimeGenerateUtil.getTime() + " 注销" + number);
 
         return map;
     }

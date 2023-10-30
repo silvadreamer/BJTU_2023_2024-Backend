@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bjtu.backend.mapper.User.TeacherMapper;
 import com.bjtu.backend.pojo.Users.Teacher;
 import com.bjtu.backend.service.User.Teacher.TeacherRegisterService;
+import com.bjtu.backend.utils.TimeGenerateUtil;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,8 @@ public class TeacherRegisterServiceImpl implements TeacherRegisterService
         String number = teacher.getNumber();
         QueryWrapper<Teacher> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("number", number);
+
+        System.out.println(TimeGenerateUtil.getTime() + " 教师注册");
 
         if(teacherMapper.selectOne(queryWrapper) == null)
         {

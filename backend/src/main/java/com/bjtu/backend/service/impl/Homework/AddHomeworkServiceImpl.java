@@ -1,15 +1,14 @@
 package com.bjtu.backend.service.impl.Homework;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.bjtu.backend.mapper.HomeworkMapper;
 import com.bjtu.backend.pojo.Homework;
 import com.bjtu.backend.service.Homework.AddHomeworkService;
+import com.bjtu.backend.utils.TimeGenerateUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Queue;
 
 @Service
 public class AddHomeworkServiceImpl implements AddHomeworkService
@@ -29,8 +28,8 @@ public class AddHomeworkServiceImpl implements AddHomeworkService
 
         Map<String, Object> map = new HashMap<>();
 
-        System.out.println("debug: add homework");
-        map.put("status", homework);
+        System.out.println(TimeGenerateUtil.getTime() + " add homework");
+        map.put("homework", homework);
 
         return map;
     }
@@ -41,7 +40,7 @@ public class AddHomeworkServiceImpl implements AddHomeworkService
         QueryWrapper<Homework> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("id", id);
 
-        System.out.println("debug: check homework");
+        System.out.println(TimeGenerateUtil.getTime() + " check homework");
 
         return homeworkMapper.exists(queryWrapper);
     }
@@ -57,6 +56,8 @@ public class AddHomeworkServiceImpl implements AddHomeworkService
         if(fileNames == null) fileNames = FileName;
         else fileNames = fileNames + "|" + FileName;
         homework.setFileName(fileNames);
+
+        System.out.println(TimeGenerateUtil.getTime() + " 教师添加附件" + FileName);
 
         homeworkMapper.update(homework, queryWrapper);
 

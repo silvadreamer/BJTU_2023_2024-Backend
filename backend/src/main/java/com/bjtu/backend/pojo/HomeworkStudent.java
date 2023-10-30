@@ -26,4 +26,6 @@ public class HomeworkStudent
     private Integer classId;
     private Integer submit;
     private Date date;
+    @TableField("file_name")
+    private String fileName;
 }

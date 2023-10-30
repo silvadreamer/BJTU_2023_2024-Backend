@@ -1,6 +1,7 @@
 package com.bjtu.backend.service.impl.Mail;
 
 import com.bjtu.backend.service.Mail.CheckService;
+import com.bjtu.backend.utils.TimeGenerateUtil;
 import io.lettuce.core.ScriptOutputType;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class CheckServiceImpl implements CheckService
         id = id + "@bjtu.edu.cn";
         String storedCode = (String) redisTemplate.opsForValue().get(id);
 
-        System.out.println("debug: " + storedCode + "," + id + "," + code);
+        System.out.println(TimeGenerateUtil.getTime() + " " + storedCode + "," + id + "," + code);
         System.out.println();
 
         return storedCode != null && storedCode.equals(code);

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bjtu.backend.mapper.User.TeacherMapper;
 import com.bjtu.backend.pojo.Users.Teacher;
 import com.bjtu.backend.service.User.Teacher.TeacherListService;
+import com.bjtu.backend.utils.TimeGenerateUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -27,7 +28,7 @@ public class TeacherListServiceImpl implements TeacherListService
 
         map.put("classInfo", teacherMapper.selectList(queryWrapper));
 
-        System.out.println("debug: get teacher list ");
+        System.out.println(TimeGenerateUtil.getTime() + " get teacher list ");
 
         return map;
     }
