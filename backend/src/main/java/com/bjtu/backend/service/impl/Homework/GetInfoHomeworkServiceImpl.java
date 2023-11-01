@@ -38,14 +38,17 @@ public class GetInfoHomeworkServiceImpl implements GetInfoHomeworkService
         Homework homework = homeworkMapper.selectOne(queryWrapper);
 
         String files = homework.getFileName();
-        String[] parts = files.split("\\|");
         HashSet<String> uniqueParts = new HashSet<>();
-
-        for (String part : parts)
+        if(files != null)
         {
-            uniqueParts.add(part.trim());
-        }
+            String[] parts = files.split("\\|");
 
+            for (String part : parts)
+            {
+                uniqueParts.add(part.trim());
+            }
+
+        }
         String[] uniquePartsArray = uniqueParts.toArray(new String[0]);
 
         map.put("info", homework);
@@ -67,14 +70,17 @@ public class GetInfoHomeworkServiceImpl implements GetInfoHomeworkService
         HomeworkStudent homeworkStudent = homeworkStudentMapper.selectOne(queryWrapper);
 
         String files = homeworkStudent.getFileName();
-        String[] parts = files.split("\\|");
         HashSet<String> uniqueParts = new HashSet<>();
-
-        for (String part : parts)
+        if(files != null)
         {
-            uniqueParts.add(part.trim());
-        }
+            String[] parts = files.split("\\|");
 
+            for (String part : parts)
+            {
+                uniqueParts.add(part.trim());
+            }
+
+        }
         String[] uniquePartsArray = uniqueParts.toArray(new String[0]);
 
         map.put("info", homeworkStudent);

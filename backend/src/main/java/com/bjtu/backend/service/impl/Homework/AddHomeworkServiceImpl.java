@@ -29,6 +29,8 @@ public class AddHomeworkServiceImpl implements AddHomeworkService
         Map<String, Object> map = new HashMap<>();
 
         System.out.println(TimeGenerateUtil.getTime() + " add homework");
+
+        map.put("status", "success");
         map.put("homework", homework);
 
         return map;

@@ -21,6 +21,6 @@ public class ClassStudent
     @TableField("class_id")
     private Integer classId;
     @TableField("student_id")
-    private Integer studentId;
+    private String studentId;
 
 }
