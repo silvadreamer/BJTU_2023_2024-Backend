@@ -2,7 +2,9 @@ package com.bjtu.backend.service.impl.Homework;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bjtu.backend.mapper.HomeworkMapper;
+import com.bjtu.backend.mapper.HomeworkStudentMapper;
 import com.bjtu.backend.pojo.Homework;
+import com.bjtu.backend.pojo.HomeworkStudent;
 import com.bjtu.backend.service.Homework.GetInfoHomeworkService;
 import com.bjtu.backend.utils.TimeGenerateUtil;
 import org.springframework.stereotype.Service;
@@ -16,10 +18,13 @@ import java.util.Map;
 public class GetInfoHomeworkServiceImpl implements GetInfoHomeworkService
 {
     final HomeworkMapper homeworkMapper;
+    final HomeworkStudentMapper homeworkStudentMapper;
 
-    public GetInfoHomeworkServiceImpl(HomeworkMapper homeworkMapper)
+    public GetInfoHomeworkServiceImpl(HomeworkMapper homeworkMapper,
+                                      HomeworkStudentMapper homeworkStudentMapper)
     {
         this.homeworkMapper = homeworkMapper;
+        this.homeworkStudentMapper = homeworkStudentMapper;
     }
 
     @Override
@@ -49,6 +54,36 @@ public class GetInfoHomeworkServiceImpl implements GetInfoHomeworkService
         System.out.println(TimeGenerateUtil.getTime() + " 获得作业信息");
 
         return map;
+    }
+
+    @Override
+    public Map<String, Object> getStudentHomeworkInfo(int id)
+    {
+        Map<String, Object> map = new HashMap<>();
+
+        QueryWrapper<HomeworkStudent> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", id);
+
+        HomeworkStudent homeworkStudent = homeworkStudentMapper.selectOne(queryWrapper);
+
+        String files = homeworkStudent.getFileName();
+        String[] parts = files.split("\\|");
+        HashSet<String> uniqueParts = new HashSet<>();
+
+        for (String part : parts)
+        {
+            uniqueParts.add(part.trim());
+        }
+
+        String[] uniquePartsArray = uniqueParts.toArray(new String[0]);
+
+        map.put("info", homeworkStudent);
+        map.put("files", uniquePartsArray);
+
+        System.out.println(TimeGenerateUtil.getTime() + " 获得作业信息");
+
+        return map;
+
     }
 
 }

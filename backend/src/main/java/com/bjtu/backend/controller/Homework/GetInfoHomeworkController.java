@@ -24,4 +24,12 @@ public class GetInfoHomeworkController
 
         return Result.success(map);
     }
+
+    @GetMapping("/getStudentHWInfo")
+    public Result<?> getStudentHomeworkInfo(@RequestParam int id)
+    {
+        Map<String, Object> map = getInfoHomeworkService.getStudentHomeworkInfo(id);
+
+        return Result.success(map);
+    }
 }

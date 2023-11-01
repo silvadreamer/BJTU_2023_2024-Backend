@@ -25,4 +25,5 @@ public class Homework
     private Integer resubmit;
     @TableField("file_name")
     private String fileName;
+    private String name;
 }
