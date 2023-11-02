@@ -68,4 +68,15 @@ public class ShowHomeworkController
 
         return Result.success(map);
     }
+
+    @GetMapping("/showForStudent")
+    public Result<Map<String, Object>> showForStudent(@RequestParam(value = "classID") int classID,
+                                                      @RequestParam(value = "studentID") int studentID,
+                                                      @RequestParam(value = "pageNo", defaultValue = "1") Long pageNo,
+                                                      @RequestParam(value = "pageSize", defaultValue = "15") Long pageSize)
+    {
+        Map<String, Object> map = showHomeworkService.showForStudent(classID, studentID, pageNo, pageSize);
+
+        return Result.success(map);
+    }
 }

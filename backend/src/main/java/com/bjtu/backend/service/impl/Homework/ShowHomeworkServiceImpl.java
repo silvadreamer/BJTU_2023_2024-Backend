@@ -10,7 +10,9 @@ import com.bjtu.backend.service.Homework.ShowHomeworkService;
 import com.bjtu.backend.utils.TimeGenerateUtil;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -46,6 +48,51 @@ public class ShowHomeworkServiceImpl implements ShowHomeworkService
         map.put("homeworkInfo", homeworkStudentMapper.selectPage(page, queryWrapper));
 
         System.out.println(TimeGenerateUtil.getTime() + " get submitted homework list ");
+
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> showForStudent(int classID, int studentID, Long pageNo, Long pageSize)
+    {
+        Map<String, Object> map = new HashMap<>();
+        QueryWrapper<Homework> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("class_id", classID);
+
+        queryWrapper.select("id", "class_id", "end", "resubmit", "name");
+
+        Page<Homework> page = new Page<>(pageNo, pageSize);
+        map.put("homeworkInfo", homeworkMapper.selectPage(page, queryWrapper));
+
+
+        QueryWrapper<HomeworkStudent> queryWrapper1 = new QueryWrapper<>();
+        List<Integer> isSubmitted = new ArrayList<>();
+
+        //查看作业是否提交
+        List<Homework> homeworkList = homeworkMapper.selectPage(page, queryWrapper).getRecords();
+        for (Homework homework : homeworkList)
+        {
+            int homeworkId = homework.getId();
+            int classId = homework.getClassId();
+
+            queryWrapper1.eq("class_id", classId).eq("homework_id", homeworkId)
+                    .eq("student_number", studentID);
+            if(homeworkStudentMapper.exists(queryWrapper1))
+            {
+                HomeworkStudent homeworkStudent = homeworkStudentMapper.selectOne(queryWrapper1);
+                isSubmitted.add(homeworkStudent.getId());
+            }
+            else
+            {
+                isSubmitted.add(0);
+            }
+            queryWrapper1.clear();
+        }
+
+        System.out.println(TimeGenerateUtil.getTime() + " student get submitted homework list ");
+
+        map.put("isSubmitted", isSubmitted);
+
 
         return map;
     }

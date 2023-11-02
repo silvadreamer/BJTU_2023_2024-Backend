@@ -23,7 +23,6 @@ public class StudentChangePwdController
     /**
      * 修改密码
      * @param student 旧密码类
-     * @param new_student 新密码类
      * @return Result类
      */
     @PostMapping("/change")
