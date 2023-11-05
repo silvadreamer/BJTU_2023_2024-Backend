@@ -10,6 +10,8 @@ import com.qcloud.cos.exception.CosClientException;
 import com.qcloud.cos.region.Region;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Service
 public class OSSDeleteServiceImpl implements OSSDeleteService
 {
@@ -25,6 +27,18 @@ public class OSSDeleteServiceImpl implements OSSDeleteService
     {
         String key = myCOSConfig.getFolderPrefix() + fileName;
 
+        return deleteFile(key);
+    }
+
+    @Override
+    public boolean deleteHomeworkFile(String prefix, String fileName)
+    {
+        String key = prefix + "/" + fileName;
+        return deleteFile(key);
+    }
+
+    private boolean deleteFile(String key)
+    {
         COSClient cosclient;
         try
         {

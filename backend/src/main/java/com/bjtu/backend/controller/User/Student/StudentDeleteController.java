@@ -27,6 +27,11 @@ public class StudentDeleteController
     {
         Map<String, String> map = studentDeleteService.delete(student);
 
-        return Result.success(map);
+        if(map.get("status").equals("success"))
+        {
+            return Result.success(map);
+        }
+
+        return Result.fail(20001, "fail");
     }
 }

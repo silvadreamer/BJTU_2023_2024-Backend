@@ -29,10 +29,17 @@ public class StudentDeleteServiceImpl implements StudentDeleteService
         String number = student.getNumber();
         QueryWrapper<Student> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("number", number);
-        studentMapper.delete(queryWrapper);
 
         Map<String, String> map = new HashMap<>();
-        map.put("status", "删除成功");
+        if(studentMapper.exists(queryWrapper))
+        {
+            studentMapper.delete(queryWrapper);
+            map.put("status", "删除成功");
+        }
+        else
+        {
+            map.put("status", "注销失败");
+        }
 
         System.out.println(TimeGenerateUtil.getTime() + " 注销" + number);
 

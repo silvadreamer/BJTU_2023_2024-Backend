@@ -48,7 +48,7 @@ public class AddHomeworkServiceImpl implements AddHomeworkService
     }
 
     @Override
-    public Map<String, String> addFileName(int id, String FileName)
+    public void addFileName(int id, String FileName)
     {
         QueryWrapper<Homework> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("id", id);
@@ -63,6 +63,5 @@ public class AddHomeworkServiceImpl implements AddHomeworkService
 
         homeworkMapper.update(homework, queryWrapper);
 
-        return null;
     }
 }

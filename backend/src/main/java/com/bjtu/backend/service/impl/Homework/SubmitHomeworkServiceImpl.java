@@ -42,7 +42,6 @@ public class SubmitHomeworkServiceImpl implements SubmitHomeworkService
         if(homeworkStudentMapper.exists(queryWrapper))
         {
             Date now = new Date();
-            System.out.println(now);
             homeworkStudent.setDate(now);
             homeworkStudentMapper.update(homeworkStudent, queryWrapper);
 

@@ -5,6 +5,7 @@ import com.bjtu.backend.mapper.ClassMapper;
 import com.bjtu.backend.mapper.ClassStudentMapper;
 import com.bjtu.backend.pojo.Class;
 import com.bjtu.backend.pojo.ClassStudent;
+import com.bjtu.backend.pojo.HomeworkStudent;
 import com.bjtu.backend.service.Class.DeleteClassService;
 import com.bjtu.backend.utils.TimeGenerateUtil;
 import org.springframework.security.core.parameters.P;

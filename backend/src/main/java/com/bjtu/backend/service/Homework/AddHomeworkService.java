@@ -10,5 +10,5 @@ public interface AddHomeworkService
 
     boolean checkHomework(int id);
 
-    Map<String, String> addFileName(int id, String File);
+    void addFileName(int id, String File);
 }

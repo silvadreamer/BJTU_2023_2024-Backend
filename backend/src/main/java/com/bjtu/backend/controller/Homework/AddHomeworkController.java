@@ -42,7 +42,7 @@ public class AddHomeworkController
      * @return Result
      */
     @PostMapping("/addFile")
-    public Result<?> addFile(@RequestParam int id, @RequestParam int classID ,@RequestParam MultipartFile multipartFile)
+    public Result<?> addFile(@RequestParam int id, @RequestParam int classID,  @RequestParam MultipartFile multipartFile)
     {
         //先检查作业是否存在
         if(!addHomeworkService.checkHomework(id))
