@@ -26,7 +26,6 @@ public class CheckServiceImpl implements CheckService
         String storedCode = (String) redisTemplate.opsForValue().get(id);
 
         System.out.println(TimeGenerateUtil.getTime() + " " + storedCode + "," + id + "," + code);
-        System.out.println();
 
         return storedCode != null && storedCode.equals(code);
     }

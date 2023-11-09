@@ -29,4 +29,5 @@ public class Homework
     @TableField("file_name")
     private String fileName;
     private String name;
+    private Integer score;
 }

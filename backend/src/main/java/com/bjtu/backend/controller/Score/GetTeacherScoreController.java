@@ -25,7 +25,7 @@ public class GetTeacherScoreController
     {
         Map<String, Integer> map = getTeacherScoreService.getScore(homeworkStudentId);
 
-        if(map.get("score") != null)
+        if(map.get("score") != -1)
         {
             return Result.success(map);
         }

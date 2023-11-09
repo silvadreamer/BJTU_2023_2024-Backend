@@ -14,6 +14,11 @@ class BackendApplicationTests
     {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         System.out.println(passwordEncoder.encode("admin"));
+
+        for(int i = 1; i < 10; i ++)
+        {
+            System.out.println(i);
+        }
     }
 
 }

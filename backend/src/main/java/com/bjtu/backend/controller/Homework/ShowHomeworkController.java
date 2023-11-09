@@ -61,7 +61,7 @@ public class ShowHomeworkController
         QueryWrapper<HomeworkStudent> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("class_id", classID).eq("homework_id", homeworkID);
 
-        queryWrapper.select("id", "homework_id", "student_number", "class_id", "date");
+        queryWrapper.select("id", "homework_id", "student_number", "class_id", "date", "score");
 
         Page<HomeworkStudent> page = new Page<>(pageNo, pageSize);
         Map<String, Object> map = showHomeworkService.showSubmitted(page, queryWrapper);

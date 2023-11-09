@@ -8,6 +8,7 @@ import com.bjtu.backend.pojo.HomeworkReview;
 import com.bjtu.backend.pojo.HomeworkStudent;
 import com.bjtu.backend.pojo.StudentScore;
 import com.bjtu.backend.service.Score.SetStudentReviewListService;
+import com.bjtu.backend.utils.TimeGenerateUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -56,6 +57,12 @@ public class SetStudentReviewListServiceImpl implements SetStudentReviewListServ
             map.put("失败", "作业已经分配！");
             return map;
         }
+        else
+        {
+            HomeworkReview homeworkReview = new HomeworkReview();
+            homeworkReview.setHomeworkId(homeworkId);
+            homeworkReviewMapper.insert(homeworkReview);
+        }
 
         //先获得提交这次作业的学生list
         QueryWrapper<HomeworkStudent> queryWrapper = new QueryWrapper<>();
@@ -83,11 +90,13 @@ public class SetStudentReviewListServiceImpl implements SetStudentReviewListServ
                     StudentScore studentScore_1 = new StudentScore();
                     studentScore_1.setStudentNumber(student_x);
                     studentScore_1.setHomeworkStudentId(homework_student_y);
+                    studentScore_1.setHomeworkId(homeworkId);
 
                     //j 改 i 的记录
                     StudentScore studentScore_2 = new StudentScore();
                     studentScore_2.setStudentNumber(student_y);
                     studentScore_2.setHomeworkStudentId(homework_student_x);
+                    studentScore_2.setHomeworkId(homeworkId);
 
                     studentScoreMapper.insert(studentScore_1);
                     studentScoreMapper.insert(studentScore_2);
@@ -110,11 +119,14 @@ public class SetStudentReviewListServiceImpl implements SetStudentReviewListServ
                     StudentScore studentScore = new StudentScore();
                     studentScore.setStudentNumber(student);
                     studentScore.setHomeworkStudentId(homework_student);
+                    studentScore.setHomeworkId(homeworkId);
 
                     studentScoreMapper.insert(studentScore);
                 }
             }
         }
+
+        System.out.println(TimeGenerateUtil.getTime() + " 设置学生的评分列表");
 
         return map;
     }

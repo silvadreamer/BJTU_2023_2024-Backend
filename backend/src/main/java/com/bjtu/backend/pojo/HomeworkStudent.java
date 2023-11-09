@@ -30,4 +30,5 @@ public class HomeworkStudent
     private Date date;
     @TableField("file_name")
     private String fileName;
+    private Integer score;
 }

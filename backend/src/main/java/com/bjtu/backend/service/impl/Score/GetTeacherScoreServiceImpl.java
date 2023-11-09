@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bjtu.backend.mapper.TeacherScoreMapper;
 import com.bjtu.backend.pojo.TeacherScore;
 import com.bjtu.backend.service.Score.GetTeacherScoreService;
+import com.bjtu.backend.utils.TimeGenerateUtil;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -40,6 +41,8 @@ public class GetTeacherScoreServiceImpl implements GetTeacherScoreService
         {
             map.put("score", score);
         }
+
+        System.out.println(TimeGenerateUtil.getTime() + " 获得教师的评分分数");
 
         return map;
     }

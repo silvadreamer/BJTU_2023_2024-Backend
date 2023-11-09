@@ -16,7 +16,6 @@ public class TeacherScore
     private Integer id;
     @TableField("homework_student_id")
     private Integer homeworkStudentId;
-    @TableField("teacher_id")
-    private String teacherId;
     private Integer score;
+    private String content;
 }

@@ -20,4 +20,7 @@ public class StudentScore
     @TableField("student_number")
     private String studentNumber;
     private Integer score;
+    @TableField("homework_id")
+    private Integer homeworkId;
+    private String content;
 }
