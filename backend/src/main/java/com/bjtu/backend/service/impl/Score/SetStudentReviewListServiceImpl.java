@@ -1,6 +1,7 @@
 package com.bjtu.backend.service.impl.Score;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.bjtu.backend.mapper.HomeworkReviewMapper;
 import com.bjtu.backend.mapper.HomeworkStudentMapper;
 import com.bjtu.backend.mapper.StudentScoreMapper;
@@ -11,6 +12,7 @@ import com.bjtu.backend.service.Score.SetStudentReviewListService;
 import com.bjtu.backend.utils.TimeGenerateUtil;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,13 +46,13 @@ public class SetStudentReviewListServiceImpl implements SetStudentReviewListServ
      * @return Map
      */
     @Override
-    public Map<String, String> setReviewList(int homeworkId)
+    public Map<String, Object> setReviewList(int homeworkId, Date start, Date end, double rate)
     {
         //判断这次作业是否生成过了
         QueryWrapper<HomeworkReview> queryWrapper1 = new QueryWrapper<>();
         queryWrapper1.eq("homework_id", homeworkId);
 
-        Map<String, String> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
 
         if(homeworkReviewMapper.exists(queryWrapper1))
         {
@@ -61,7 +63,11 @@ public class SetStudentReviewListServiceImpl implements SetStudentReviewListServ
         {
             HomeworkReview homeworkReview = new HomeworkReview();
             homeworkReview.setHomeworkId(homeworkId);
+            homeworkReview.setStart(start);
+            homeworkReview.setEnd(end);
+            homeworkReview.setStudentRate(rate);
             homeworkReviewMapper.insert(homeworkReview);
+            map.put("review", homeworkReview);
         }
 
         //先获得提交这次作业的学生list
@@ -127,6 +133,20 @@ public class SetStudentReviewListServiceImpl implements SetStudentReviewListServ
         }
 
         System.out.println(TimeGenerateUtil.getTime() + " 设置学生的评分列表");
+
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> modifyReview(HomeworkReview homeworkReview)
+    {
+        UpdateWrapper<HomeworkReview> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("homework_id", homeworkReview.getHomeworkId());
+
+        homeworkReviewMapper.update(homeworkReview, updateWrapper);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("review", homeworkReview);
 
         return map;
     }

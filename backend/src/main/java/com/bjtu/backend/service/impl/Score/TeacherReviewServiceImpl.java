@@ -8,7 +8,6 @@ import com.bjtu.backend.service.Score.TeacherReviewService;
 import com.bjtu.backend.utils.TimeGenerateUtil;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.HashMap;
 import java.util.Map;
 

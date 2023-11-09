@@ -19,4 +19,10 @@ public class HomeworkReview
     private Integer id;
     @TableField("homework_id")
     private Integer homeworkId;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+    private Date start;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+    private Date end;
+    @TableField("student_rate")
+    private Double studentRate;
 }

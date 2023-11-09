@@ -25,6 +25,11 @@ public class GetTeacherScoreController
     {
         Map<String, Integer> map = getTeacherScoreService.getScore(homeworkStudentId);
 
+        if(map.isEmpty())
+        {
+            return Result.fail(20001, "教师尚未评阅");
+        }
+
         if(map.get("score") != -1)
         {
             return Result.success(map);
