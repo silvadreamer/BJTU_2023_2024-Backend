@@ -5,5 +5,5 @@ import java.util.Map;
 
 public interface GetTeacherScoreService
 {
-    Map<String, Integer> getScore(int homeworkStudentId);
+    Map<String, Object> getScore(int homeworkStudentId);
 }

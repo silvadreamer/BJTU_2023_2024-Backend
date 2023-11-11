@@ -23,12 +23,12 @@ public class GetTeacherScoreServiceImpl implements GetTeacherScoreService
     }
 
     @Override
-    public Map<String, Integer> getScore(int homeworkStudentId)
+    public Map<String, Object> getScore(int homeworkStudentId)
     {
         QueryWrapper<TeacherScore> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("homework_student_id", homeworkStudentId);
 
-        Map<String, Integer> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
 
         if(!teacherScoreMapper.exists(queryWrapper))
         {
@@ -39,7 +39,7 @@ public class GetTeacherScoreServiceImpl implements GetTeacherScoreService
 
         if(score != null)
         {
-            map.put("score", score);
+            map.put("info", teacherScoreMapper.selectOne(queryWrapper));
         }
 
         System.out.println(TimeGenerateUtil.getTime() + " 获得教师的评分分数");

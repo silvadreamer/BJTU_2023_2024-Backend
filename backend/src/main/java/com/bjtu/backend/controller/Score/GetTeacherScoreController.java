@@ -2,6 +2,7 @@ package com.bjtu.backend.controller.Score;
 
 import com.bjtu.backend.IO.Result;
 import com.bjtu.backend.service.Score.GetTeacherScoreService;
+import lombok.var;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,18 +24,18 @@ public class GetTeacherScoreController
     @GetMapping("/getTeacherScore")
     public Result<?> getScore(@RequestParam int homeworkStudentId)
     {
-        Map<String, Integer> map = getTeacherScoreService.getScore(homeworkStudentId);
+        var map = getTeacherScoreService.getScore(homeworkStudentId);
 
         if(map.isEmpty())
         {
             return Result.fail(20001, "教师尚未评阅");
         }
 
-        if(map.get("score") != -1)
-        {
+//        if(map.get("score") != -1)
+//        {
             return Result.success(map);
-        }
+//        }
 
-        return Result.fail(20001, "教师尚未评阅");
+        //return Result.fail(20001, "教师尚未评阅");
     }
 }

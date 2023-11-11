@@ -10,10 +10,7 @@ import com.bjtu.backend.service.Homework.ShowHomeworkService;
 import com.bjtu.backend.utils.TimeGenerateUtil;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ShowHomeworkServiceImpl implements ShowHomeworkService
@@ -59,18 +56,34 @@ public class ShowHomeworkServiceImpl implements ShowHomeworkService
         QueryWrapper<Homework> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("class_id", classID);
 
-        queryWrapper.select("id", "class_id", "end", "resubmit", "name");
+        queryWrapper.select("id", "class_id", "end", "resubmit", "name", "start", "end");
 
         Page<Homework> page = new Page<>(pageNo, pageSize);
-        map.put("homeworkInfo", homeworkMapper.selectPage(page, queryWrapper));
 
+        //获得原始的课程列表
+        List<Homework> origin_homework = homeworkMapper.selectPage(page, queryWrapper).getRecords();
+        List<Homework> valid_homework = new ArrayList<>();
+
+        for(Homework homework : origin_homework)
+        {
+            Date startDate = homework.getStart();
+            Date currentDate = new Date();
+
+            if(startDate.before(currentDate))
+            {
+                valid_homework.add(homework);
+            }
+        }
+
+        //map.put("homeworkInfo", homeworkMapper.selectPage(page, queryWrapper));
+        map.put("homeworkInfo", valid_homework);
 
         QueryWrapper<HomeworkStudent> queryWrapper1 = new QueryWrapper<>();
         List<Integer> isSubmitted = new ArrayList<>();
 
         //查看作业是否提交
-        List<Homework> homeworkList = homeworkMapper.selectPage(page, queryWrapper).getRecords();
-        for (Homework homework : homeworkList)
+        //List<Homework> homeworkList = homeworkMapper.selectPage(page, queryWrapper).getRecords();
+        for (Homework homework : valid_homework)
         {
             int homeworkId = homework.getId();
             int classId = homework.getClassId();
@@ -84,7 +97,12 @@ public class ShowHomeworkServiceImpl implements ShowHomeworkService
             }
             else
             {
-                isSubmitted.add(0);
+                Date currentDate = new Date();
+                Date endDate = homework.getEnd();
+
+                //查看作业还能不能交
+                if(currentDate.after(endDate)) isSubmitted.add(-1);
+                else isSubmitted.add(0);
             }
             queryWrapper1.clear();
         }
