@@ -78,6 +78,8 @@ public class ShowHomeworkServiceImpl implements ShowHomeworkService
         //map.put("homeworkInfo", homeworkMapper.selectPage(page, queryWrapper));
         map.put("homeworkInfo", valid_homework);
 
+        map.put("total", valid_homework.size());
+
         QueryWrapper<HomeworkStudent> queryWrapper1 = new QueryWrapper<>();
         List<Integer> isSubmitted = new ArrayList<>();
 

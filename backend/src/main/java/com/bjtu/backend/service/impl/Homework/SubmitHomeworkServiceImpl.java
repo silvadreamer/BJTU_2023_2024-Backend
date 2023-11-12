@@ -59,7 +59,6 @@ public class SubmitHomeworkServiceImpl implements SubmitHomeworkService
         //设置为提交
         homeworkStudent.setSubmit(1);
         Date now = new Date();
-        System.out.println(now);
         homeworkStudent.setDate(now);
         homeworkStudentMapper.insert(homeworkStudent);
 
