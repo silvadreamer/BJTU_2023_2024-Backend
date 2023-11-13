@@ -1,9 +1,11 @@
 package com.bjtu.backend.service.impl.File;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.bjtu.backend.mapper.ClassMapper;
 import com.bjtu.backend.mapper.ClassStudentMapper;
 import com.bjtu.backend.mapper.User.StudentMapper;
+import com.bjtu.backend.pojo.Class;
 import com.bjtu.backend.pojo.ClassStudent;
 import com.bjtu.backend.pojo.Users.Student;
 import com.bjtu.backend.service.File.ClassStudentFileService;
@@ -22,12 +24,15 @@ public class ClassStudentFileServiceImpl implements ClassStudentFileService
 {
     final ClassStudentMapper classStudentMapper;
     final StudentMapper studentMapper;
+    final ClassMapper classMapper;
 
     public ClassStudentFileServiceImpl(ClassStudentMapper classStudentMapper,
-                                       StudentMapper studentMapper)
+                                       StudentMapper studentMapper,
+                                       ClassMapper classMapper)
     {
         this.classStudentMapper = classStudentMapper;
         this.studentMapper = studentMapper;
+        this.classMapper = classMapper;
     }
 
     @Override
@@ -43,8 +48,17 @@ public class ClassStudentFileServiceImpl implements ClassStudentFileService
             Sheet sheet = workbook.getSheetAt(0);
             List<ClassStudent> list = new ArrayList<>();
             List<String> invalidStudent = new ArrayList<>();
+            List<ClassStudent> validStudent = new ArrayList<>();
 
             int index = 0;
+
+            //如果人数超过总人数则全部打回
+            UpdateWrapper<Class> queryWrapper2 = new UpdateWrapper<>();
+            queryWrapper2.eq("id", classId);
+            //当前人数
+            int classNowNum = classMapper.selectOne(queryWrapper2).getCurrentNum();
+            //总人数
+            int totalNum = classMapper.selectOne(queryWrapper2).getNum();
 
             for(Row row : sheet)
             {
@@ -77,10 +91,25 @@ public class ClassStudentFileServiceImpl implements ClassStudentFileService
                 ClassStudent classStudent = new ClassStudent();
                 classStudent.setClassId(classId);
                 classStudent.setStudentId(column1Value);
+
+                validStudent.add(classStudent);
+            }
+
+            if(classNowNum + validStudent.size() > totalNum)
+            {
+                map.put("失败", "课程总容量不足");
+                return map;
+            }
+
+
+            for(ClassStudent classStudent : validStudent)
+            {
                 classStudentMapper.insert(classStudent);
                 successNum ++;
-
             }
+
+            queryWrapper2.set("current_num", classNowNum + validStudent.size());
+            classMapper.update(null, queryWrapper2);
 
             map.put("成功人数", successNum);
             map.put("失败人数", failNum);
