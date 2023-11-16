@@ -21,10 +21,11 @@ public class GetStudentListController
     }
 
     @GetMapping("/getList")
-    public Result<?> getList(@RequestParam(defaultValue = "1") Long pageNo,
+    public Result<?> getList(@RequestParam(required = false) String name,
+                             @RequestParam(defaultValue = "1") Long pageNo,
                              @RequestParam(defaultValue = "10") Long pageSize)
     {
-        var map = getStudentListService.getStudentList(pageNo, pageSize);
+        var map = getStudentListService.getStudentList(name, pageNo, pageSize);
 
         return Result.success(map);
     }

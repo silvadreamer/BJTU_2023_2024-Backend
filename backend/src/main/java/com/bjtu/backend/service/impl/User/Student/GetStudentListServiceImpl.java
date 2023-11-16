@@ -23,11 +23,12 @@ public class GetStudentListServiceImpl implements GetStudentListService
     }
 
     @Override
-    public Map<String, Object> getStudentList(Long pageNo, Long pageSize)
+    public Map<String, Object> getStudentList(String name, Long pageNo, Long pageSize)
     {
 
         QueryWrapper<Student> queryWrapper = new QueryWrapper<>();
         queryWrapper.select("name", "number");
+        queryWrapper.like("name", name);
         Page<Student> page = new Page<>(pageNo, pageSize);
 
         Map<String, Object> map = new HashMap<>();

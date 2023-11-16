@@ -8,5 +8,5 @@ import java.util.Map;
 
 public interface TeacherListService
 {
-    Map<String, Object> list(QueryWrapper<Teacher> queryWrapper);
+    Map<String, Object> list(String name, Long pageNo, Long pageSize);
 }

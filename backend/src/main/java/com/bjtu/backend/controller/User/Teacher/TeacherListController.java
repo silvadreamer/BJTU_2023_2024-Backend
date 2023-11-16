@@ -1,14 +1,12 @@
 package com.bjtu.backend.controller.User.Teacher;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bjtu.backend.IO.Result;
-import com.bjtu.backend.pojo.Users.Teacher;
 import com.bjtu.backend.service.User.Teacher.TeacherListService;
+import lombok.var;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("/teacher")
@@ -22,12 +20,11 @@ public class TeacherListController
     }
 
     @GetMapping("/list")
-    public Result<?> getList()
+    public Result<?> getList(@RequestParam(required = false) String name,
+                             @RequestParam(defaultValue = "1") Long pageNo,
+                             @RequestParam(defaultValue = "10") Long pageSize)
     {
-        QueryWrapper<Teacher> queryWrapper = new QueryWrapper<>();
-        queryWrapper.select("number", "name");
-
-        Map<String, Object> map = teacherListService.list(queryWrapper);
+        var map = teacherListService.list(name, pageNo, pageSize);
 
         return Result.success(map);
     }

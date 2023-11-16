@@ -22,11 +22,15 @@ public class TeacherListServiceImpl implements TeacherListService
     }
 
     @Override
-    public Map<String, Object> list(QueryWrapper<Teacher> queryWrapper)
+    public Map<String, Object> list(String name, Long pageNo, Long pageSize)
     {
+        QueryWrapper<Teacher> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("number", "name");
+        queryWrapper.like("name", name);
+        Page<Teacher> page = new Page<>(pageNo, pageSize);
         Map<String, Object> map = new HashMap<>();
 
-        map.put("classInfo", teacherMapper.selectList(queryWrapper));
+        map.put("list", teacherMapper.selectPage(page, queryWrapper));
 
         System.out.println(TimeGenerateUtil.getTime() + " get teacher list ");
 

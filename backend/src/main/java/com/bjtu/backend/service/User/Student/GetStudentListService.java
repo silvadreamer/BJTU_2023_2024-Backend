@@ -4,5 +4,5 @@ import java.util.Map;
 
 public interface GetStudentListService
 {
-    Map<String, Object> getStudentList(Long pageNo, Long pageSize);
+    Map<String, Object> getStudentList(String name, Long pageNo, Long pageSize);
 }
