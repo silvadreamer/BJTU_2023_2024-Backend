@@ -8,6 +8,7 @@ import com.bjtu.backend.pojo.ClassStudent;
 import com.bjtu.backend.pojo.Users.Student;
 import com.bjtu.backend.service.Class.GetStudentsService;
 import com.bjtu.backend.service.impl.User.Student.GetStudentListServiceImpl;
+import com.bjtu.backend.utils.TimeGenerateUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -27,6 +28,13 @@ public class GetStudentsServiceImpl implements GetStudentsService
         this.studentMapper = studentMapper;
     }
 
+    /**
+     * 获得选择课程的学生分页
+     * @param classId 课程id
+     * @param pageNo 页数
+     * @param pageSize 页容量
+     * @return Map
+     */
     @Override
     public Map<String, Object> getStudents(int classId, Long pageNo, Long pageSize)
     {
@@ -39,15 +47,25 @@ public class GetStudentsServiceImpl implements GetStudentsService
         List<ClassStudent> classStudentList = classStudentMapper.selectList(queryWrapper);
 
         QueryWrapper<Student> queryWrapper1 = new QueryWrapper<>();
-        for(ClassStudent classStudent : classStudentList)
+
+        if(classStudentList.size() != 0)
         {
-            String number = classStudent.getStudentId();
-            queryWrapper1.or().eq("number", number);
+            for(ClassStudent classStudent : classStudentList)
+            {
+                String number = classStudent.getStudentId();
+                queryWrapper1.or().eq("number", number);
+            }
+
+            queryWrapper1.select("number", "name");
+        }
+        else
+        {
+            queryWrapper1.eq("number", "00000000");
         }
 
-        queryWrapper1.select("number", "name");
-
         map.put("page", studentMapper.selectPage(page, queryWrapper1));
+
+        System.out.println(TimeGenerateUtil.getTime() + " 获得选修课程的学生 ");
 
         return map;
     }

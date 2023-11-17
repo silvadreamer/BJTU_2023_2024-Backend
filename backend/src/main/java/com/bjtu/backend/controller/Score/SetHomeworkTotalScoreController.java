@@ -26,4 +26,5 @@ public class SetHomeworkTotalScoreController
         Map<String, Object> map = setHomeworkTotalScoreService.setTotalScore(homeworkId, score);
         return Result.success(map);
     }
+
 }

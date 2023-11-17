@@ -9,4 +9,7 @@ public interface SetStudentHomeworkScoreService
      * @return Map
      */
     Map<String, String> setScore(int homeworkStudentId);
+
+
+    Map<String, Object> SABTXT_simple(int homeworkId);
 }

@@ -2,9 +2,11 @@ package com.bjtu.backend.service.impl.Score;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.bjtu.backend.mapper.HomeworkMapper;
 import com.bjtu.backend.mapper.HomeworkReviewMapper;
 import com.bjtu.backend.mapper.HomeworkStudentMapper;
 import com.bjtu.backend.mapper.StudentScoreMapper;
+import com.bjtu.backend.pojo.Homework;
 import com.bjtu.backend.pojo.HomeworkReview;
 import com.bjtu.backend.pojo.HomeworkStudent;
 import com.bjtu.backend.pojo.StudentScore;
@@ -23,14 +25,17 @@ public class SetStudentReviewListServiceImpl implements SetStudentReviewListServ
     final HomeworkStudentMapper homeworkStudentMapper;
     final StudentScoreMapper studentScoreMapper;
     final HomeworkReviewMapper homeworkReviewMapper;
+    final HomeworkMapper homeworkMapper;
 
     public SetStudentReviewListServiceImpl(HomeworkStudentMapper homeworkStudentMapper,
                                            StudentScoreMapper studentScoreMapper,
-                                           HomeworkReviewMapper homeworkReviewMapper)
+                                           HomeworkReviewMapper homeworkReviewMapper,
+                                           HomeworkMapper homeworkMapper)
     {
         this.homeworkStudentMapper = homeworkStudentMapper;
         this.studentScoreMapper = studentScoreMapper;
         this.homeworkReviewMapper = homeworkReviewMapper;
+        this.homeworkMapper = homeworkMapper;
     }
 
 
@@ -48,11 +53,20 @@ public class SetStudentReviewListServiceImpl implements SetStudentReviewListServ
     @Override
     public Map<String, Object> setReviewList(int homeworkId, Date start, Date end, double rate)
     {
+        Map<String, Object> map = new HashMap<>();
+        Date now = new Date();
+        QueryWrapper<Homework> queryWrapper3 = new QueryWrapper<>();
+        queryWrapper3.eq("id", homeworkId);
+        Date endTime = homeworkMapper.selectOne(queryWrapper3).getEnd();
+        if(endTime.after(now))
+        {
+            map.put("error", "作业尚未结束！");
+            return map;
+        }
+
         //判断这次作业是否生成过了
         QueryWrapper<HomeworkReview> queryWrapper1 = new QueryWrapper<>();
         queryWrapper1.eq("homework_id", homeworkId);
-
-        Map<String, Object> map = new HashMap<>();
 
         if(homeworkReviewMapper.exists(queryWrapper1))
         {

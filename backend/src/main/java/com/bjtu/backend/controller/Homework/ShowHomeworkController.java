@@ -53,18 +53,13 @@ public class ShowHomeworkController
     }
 
     @GetMapping("/showSubmitted")
-    public Result<Map<String, Object>> showSubmittedList(@RequestParam(value = "classID") int classID,
-                                                         @RequestParam(value = "homeworkID") int homeworkID,
+    public Result<Map<String, Object>> showSubmittedList(@RequestParam(value = "classID") int classId,
+                                                         @RequestParam(value = "homeworkID") int homeworkId,
                                                          @RequestParam(value = "pageNo", defaultValue = "1") Long pageNo,
                                                          @RequestParam(value = "pageSize", defaultValue = "15") Long pageSize)
     {
-        QueryWrapper<HomeworkStudent> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("class_id", classID).eq("homework_id", homeworkID);
 
-        queryWrapper.select("id", "homework_id", "student_number", "class_id", "date", "score");
-
-        Page<HomeworkStudent> page = new Page<>(pageNo, pageSize);
-        Map<String, Object> map = showHomeworkService.showSubmitted(page, queryWrapper);
+        Map<String, Object> map = showHomeworkService.showSubmitted(classId, homeworkId, pageNo, pageSize);
 
         return Result.success(map);
     }
