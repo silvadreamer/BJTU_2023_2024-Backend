@@ -11,18 +11,18 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class Reminder
+@AllArgsConstructor
+public class Submission
 {
     @TableId(type = IdType.AUTO)
     private Integer id;
     @TableField("student_number")
     private String studentNumber;
-    @TableField("is_read")
-    private Integer isRead;
+    private String status;
+    @TableField("code_homework_id")
+    private Integer codeHomeworkId;
+    private String content;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date date;
-    private String content;
-    private String title;
 }

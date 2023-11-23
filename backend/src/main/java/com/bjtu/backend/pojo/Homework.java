@@ -30,4 +30,5 @@ public class Homework
     private String fileName;
     private String name;
     private Integer score;
+    private Integer discussion;
 }

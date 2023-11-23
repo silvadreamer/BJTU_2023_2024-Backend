@@ -31,4 +31,10 @@ public class Discussion
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date time;
     private Integer reply;
+    @TableField("reply_content")
+    private String replyContent;
+    @TableField("reply_student_number")
+    private String replyStudentNumber;
+    @TableField("reply_teacher_number")
+    private String replyTeacherNumber;
 }

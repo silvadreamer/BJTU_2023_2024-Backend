@@ -90,6 +90,7 @@ public class HomeworkRemindServiceImpl implements HomeworkRemindService
             Reminder reminder = new Reminder();
             reminder.setContent("请注意提交课程" + className + "的作业" + name);
             reminder.setStudentNumber(studentNumber);
+            reminder.setTitle("作业提醒");
             reminder.setDate(now);
 
             reminderMapper.insert(reminder);

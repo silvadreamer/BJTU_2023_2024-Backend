@@ -39,6 +39,7 @@ public class GetInfoHomeworkServiceImpl implements GetInfoHomeworkService
 
         String files = homework.getFileName();
         HashSet<String> uniqueParts = new HashSet<>();
+
         if(files != null)
         {
             String[] parts = files.split("\\|");

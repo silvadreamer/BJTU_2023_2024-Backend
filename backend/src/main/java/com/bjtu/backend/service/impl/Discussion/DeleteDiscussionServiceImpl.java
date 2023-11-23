@@ -26,8 +26,8 @@ public class DeleteDiscussionServiceImpl implements DeleteDiscussionService
         UpdateWrapper<Discussion> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("id", id).set("content", "**该内容已被删除**");
         updateWrapper.set("deleted", 1);
-        updateWrapper.set("student_number", null);
-        updateWrapper.set("teacher_number", null);
+        updateWrapper.set("student_number", "-1");
+        updateWrapper.set("teacher_number", "-1");
 
         discussionMapper.update(null, updateWrapper);
 

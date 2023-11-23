@@ -7,4 +7,6 @@ import java.util.Map;
 public interface AddAnswerService
 {
     Map<String, Object> addAnswer(Answers answers);
+
+    Map<String, Object> addFileName(int answerId, String fileName);
 }

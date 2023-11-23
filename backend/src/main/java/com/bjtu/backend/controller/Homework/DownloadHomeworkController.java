@@ -51,7 +51,7 @@ public class DownloadHomeworkController
 
         if(map == null)
         {
-            return Result.fail(20001,"附件不存在，请重新下载");
+            return Result.fail(20001,"附件不存在，请重试");
         }
 
         return Result.success(map);

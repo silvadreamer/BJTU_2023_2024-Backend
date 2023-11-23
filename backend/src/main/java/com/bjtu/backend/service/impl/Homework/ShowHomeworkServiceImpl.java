@@ -94,7 +94,7 @@ public class ShowHomeworkServiceImpl implements ShowHomeworkService
         QueryWrapper<Homework> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("class_id", classID);
 
-        queryWrapper.select("id", "class_id", "end", "resubmit", "name", "start", "end");
+        queryWrapper.select("id", "class_id", "end", "resubmit", "name", "start", "end", "discussion");
 
         Page<Homework> page = new Page<>(pageNo, pageSize);
 
