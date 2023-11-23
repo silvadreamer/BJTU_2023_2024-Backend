@@ -44,7 +44,7 @@ public class ShowHomeworkController
         QueryWrapper<Homework> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("class_id", classID);
 
-        queryWrapper.select("id", "class_id", "name", "end", "discussion");
+        queryWrapper.select("id", "start", "class_id", "name", "end", "discussion");
 
         Page<Homework> page = new Page<>(pageNo, pageSize);
         Map<String, Object> map = showHomeworkService.show(page, queryWrapper);

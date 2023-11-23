@@ -2,8 +2,10 @@ package com.bjtu.backend.service.impl.Score;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.bjtu.backend.mapper.ClassMapper;
 import com.bjtu.backend.mapper.HomeworkMapper;
 import com.bjtu.backend.mapper.HomeworkStudentMapper;
+import com.bjtu.backend.pojo.Class;
 import com.bjtu.backend.pojo.Homework;
 import com.bjtu.backend.pojo.HomeworkStudent;
 import com.bjtu.backend.service.Score.GetScoreStatisticService;
@@ -19,12 +21,15 @@ public class GetScoreStatisticServiceImpl implements GetScoreStatisticService
 {
     final HomeworkStudentMapper homeworkStudentMapper;
     final HomeworkMapper homeworkMapper;
+    final ClassMapper classMapper;
 
     public GetScoreStatisticServiceImpl(HomeworkStudentMapper homeworkStudentMapper,
-                                        HomeworkMapper homeworkMapper)
+                                        HomeworkMapper homeworkMapper,
+                                        ClassMapper classMapper)
     {
         this.homeworkStudentMapper = homeworkStudentMapper;
         this.homeworkMapper = homeworkMapper;
+        this.classMapper = classMapper;
     }
 
     @Override
@@ -39,6 +44,7 @@ public class GetScoreStatisticServiceImpl implements GetScoreStatisticService
         QueryWrapper<Homework> queryWrapper1 = new QueryWrapper<>();
         queryWrapper1.eq("id", homeworkId);
         int totalScore = homeworkMapper.selectOne(queryWrapper1).getScore();
+        int classId = homeworkMapper.selectOne(queryWrapper1).getClassId();
 
         int score_90 = (int) (totalScore * 0.9);
         int score_80 = (int) (totalScore * 0.8);
@@ -82,6 +88,11 @@ public class GetScoreStatisticServiceImpl implements GetScoreStatisticService
         map.put("80%-90%", String.valueOf(num_80));
         map.put("90%-100%", String.valueOf(num_90));
         map.put("总数", list.size());
+
+        QueryWrapper<Class> queryWrapper2 = new QueryWrapper<>();
+        queryWrapper2.eq("id", classId);
+        int studentTotalNum = classMapper.selectOne(queryWrapper2).getCurrentNum();
+        map.put("应交人数", studentTotalNum);
 
         System.out.println(TimeGenerateUtil.getTime() + " 获得分数统计数据");
 

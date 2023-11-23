@@ -20,9 +20,9 @@ public class GetAnswerController
     }
 
     @PostMapping("/get")
-    public Result<?> get(@RequestParam int answerId)
+    public Result<?> get(@RequestParam int homeworkId)
     {
-        var map = getAnswerService.get(answerId);
+        var map = getAnswerService.get(homeworkId);
 
         return Result.success(map);
     }

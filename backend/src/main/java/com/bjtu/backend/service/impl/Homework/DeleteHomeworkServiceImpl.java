@@ -47,7 +47,7 @@ public class DeleteHomeworkServiceImpl implements DeleteHomeworkService
         Homework homework = homeworkMapper.selectOne(queryWrapper);
         String files = homework.getFileName();
         HashSet<String> uniqueParts = new HashSet<>();
-        if(files != null)
+        if(files != null && files.contains("|"))
         {
             String[] parts = files.split("\\|");
 
@@ -55,19 +55,29 @@ public class DeleteHomeworkServiceImpl implements DeleteHomeworkService
             {
                 if(!part.equals(File)) uniqueParts.add(part.trim());
             }
-        }
 
-        String fileNames = "";
-        for(String fileName : uniqueParts)
+            String fileNames = "";
+            for(String fileName : uniqueParts)
+            {
+                fileNames += "|" + fileName;
+            }
+
+            fileNames = fileNames.substring(1);
+
+            homework.setFileName(fileNames);
+
+            homeworkMapper.update(homework, queryWrapper);
+        }
+        else if(files != null)
         {
-            fileNames += "|" + fileName;
+            homework.setFileName("");
+            homeworkMapper.update(homework, queryWrapper);
+        }
+        else
+        {
+            return;
         }
 
-        fileNames = fileNames.substring(1);
-
-        homework.setFileName(fileNames);
-
-        homeworkMapper.update(homework, queryWrapper);
 
         System.out.println(TimeGenerateUtil.getTime() + " 教师删除附件" + File);
 
@@ -82,7 +92,7 @@ public class DeleteHomeworkServiceImpl implements DeleteHomeworkService
         HomeworkStudent homeworkStudent = homeworkStudentMapper.selectOne(queryWrapper);
         String files = homeworkStudent.getFileName();
         HashSet<String> uniqueParts = new HashSet<>();
-        if(files != null)
+        if(files != null && files.contains("\\|"))
         {
             String[] parts = files.split("\\|");
 
@@ -90,19 +100,27 @@ public class DeleteHomeworkServiceImpl implements DeleteHomeworkService
             {
                 if(!part.equals(File)) uniqueParts.add(part.trim());
             }
-        }
 
-        String fileNames = "";
-        for(String fileName : uniqueParts)
+            String fileNames = "";
+            for(String fileName : uniqueParts)
+            {
+                fileNames += "|" + fileName;
+            }
+
+            fileNames = fileNames.substring(1);
+            homeworkStudent.setFileName(fileNames);
+
+            homeworkStudentMapper.update(homeworkStudent, queryWrapper);
+        }
+        else if(files != null)
         {
-            fileNames += "|" + fileName;
+            homeworkStudent.setFileName("");
+            homeworkStudentMapper.update(homeworkStudent, queryWrapper);
         }
-
-        fileNames = fileNames.substring(1);
-
-        homeworkStudent.setFileName(fileNames);
-
-        homeworkStudentMapper.update(homeworkStudent, queryWrapper);
+        else
+        {
+           return;
+        }
 
         System.out.println(TimeGenerateUtil.getTime() + " 学生删除附件" + File);
     }

@@ -40,7 +40,7 @@ public class GetInfoHomeworkServiceImpl implements GetInfoHomeworkService
         String files = homework.getFileName();
         HashSet<String> uniqueParts = new HashSet<>();
 
-        if(files != null)
+        if(files != null && !files.equals(""))
         {
             String[] parts = files.split("\\|");
 
@@ -72,7 +72,7 @@ public class GetInfoHomeworkServiceImpl implements GetInfoHomeworkService
 
         String files = homeworkStudent.getFileName();
         HashSet<String> uniqueParts = new HashSet<>();
-        if(files != null)
+        if(files != null && !files.equals(""))
         {
             String[] parts = files.split("\\|");
 

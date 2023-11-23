@@ -25,9 +25,15 @@ public class GetAnswerServiceImpl implements GetAnswerService
     public Map<String, Object> get(int id)
     {
         QueryWrapper<Answers> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("id", id);
+        queryWrapper.eq("homework_id", id);
 
         Map<String, Object> map = new HashMap<>();
+
+        if(!answersMapper.exists(queryWrapper))
+        {
+            map.put("answer", "暂无答案");
+            return map;
+        }
 
         Answers answers = answersMapper.selectOne(queryWrapper);
         map.put("answer", answers);
