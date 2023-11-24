@@ -2,6 +2,7 @@ package com.bjtu.backend.service.impl.Answer;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bjtu.backend.mapper.AnswersMapper;
+import com.bjtu.backend.mapper.HomeworkMapper;
 import com.bjtu.backend.pojo.Answers;
 import com.bjtu.backend.pojo.Homework;
 import com.bjtu.backend.service.Answers.AddAnswerService;
@@ -15,10 +16,13 @@ import java.util.Map;
 public class AddAnswerServiceImpl implements AddAnswerService
 {
     final AnswersMapper answersMapper;
+    final HomeworkMapper homeworkMapper;
 
-    public AddAnswerServiceImpl(AnswersMapper answersMapper)
+    public AddAnswerServiceImpl(AnswersMapper answersMapper,
+                                HomeworkMapper homeworkMapper)
     {
         this.answersMapper = answersMapper;
+        this.homeworkMapper = homeworkMapper;
     }
 
     @Override
@@ -29,6 +33,13 @@ public class AddAnswerServiceImpl implements AddAnswerService
         int homeworkId = answers.getHomeworkId();
         QueryWrapper<Answers> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("homework_id", homeworkId);
+
+        QueryWrapper<Homework> queryWrapper1 = new QueryWrapper<>();
+        queryWrapper.eq("id", homeworkId);
+        Homework homework = homeworkMapper.selectOne(queryWrapper1);
+        homework.setAnswer(1);
+        homeworkMapper.update(homework, queryWrapper1);
+
         if(answersMapper.exists(queryWrapper))
         {
             map.put("fail", "答案已存在");

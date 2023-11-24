@@ -31,4 +31,5 @@ public class Homework
     private String name;
     private Integer score;
     private Integer discussion;
+    private Integer answer;
 }
