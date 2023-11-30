@@ -55,7 +55,7 @@ public class AddHomeworkServiceImpl implements AddHomeworkService
 
         Homework homework = homeworkMapper.selectOne(queryWrapper);
         String fileNames = homework.getFileName();
-        if(fileNames == null) fileNames = FileName;
+        if(fileNames == null || fileNames.equals("")) fileNames = FileName;
         else fileNames = fileNames + "|" + FileName;
         homework.setFileName(fileNames);
 

@@ -2,6 +2,7 @@ package com.bjtu.backend.service.impl.Code;
 
 import cn.hutool.json.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.bjtu.backend.mapper.CodeMapper;
 import com.bjtu.backend.mapper.SubmissionMapper;
 import com.bjtu.backend.pojo.Submission;
 import com.bjtu.backend.service.Code.CodeSubmitService;
@@ -34,12 +35,26 @@ import java.util.concurrent.TimeoutException;
 public class CodeSubmitServiceImpl implements CodeSubmitService
 {
     final SubmissionMapper submissionMapper;
-    WssHandler wssHandler;
+    final CodeMapper codeMapper;
 
-    public CodeSubmitServiceImpl(SubmissionMapper submissionMapper)
+    String header = "file_3132784_readed=\"\"; file_8687507_readed=\"\"; csrftoken=GiqRia4TB2SoHvRXuGuHjLuOhCQ4xTiqyJdGo2Fs6Jsope7M3iWBjaVH8rwaPTSi; sessionid=m05qrw1ybp4xogqd8svh1c90jc366d40; file_1061_readed=\"\"; file_4476078_readed=\"\"";
+
+    public CodeSubmitServiceImpl(SubmissionMapper submissionMapper, CodeMapper codeMapper)
     {
         this.submissionMapper = submissionMapper;
+        this.codeMapper = codeMapper;
     }
+
+    WssHandler wssHandler;
+
+    @Override
+    public String updateHeader(String s)
+    {
+        this.header = s;
+
+        return header;
+    }
+
 
     @Override
     public Map<String, Object> submit(Submission submission)
@@ -48,7 +63,7 @@ public class CodeSubmitServiceImpl implements CodeSubmitService
         submission.setDate(now);
         submissionMapper.insert(submission);
 
-        wssHandler = new WssHandler(submission, submissionMapper);
+        wssHandler = new WssHandler(submission, submissionMapper, codeMapper);
         var map = wss(submission);
 
 //        do
@@ -77,20 +92,22 @@ public class CodeSubmitServiceImpl implements CodeSubmitService
     {
         WebSocketClient webSocketClient = new StandardWebSocketClient();
         WebSocketHttpHeaders webSocketHttpHeaders = new WebSocketHttpHeaders();
-        webSocketHttpHeaders.add("Cookie", "csrftoken=PwFc0Wrix116GL00TLAPwAzu2CU44ZD0SYheCz4IyAXUzFOipTEQFYgakOcr8Xwu; sessionid=d42zmwn1ac815at9rlc1rxp0qgx8kfq7");
+        webSocketHttpHeaders.add("Cookie", header);
         URI uri = URI.create("wss://www.acwing.com/wss/socket/");
         Map<String, Object> map = new HashMap<>();
 
         try
         {
             WebSocketSession session = webSocketClient.doHandshake(wssHandler, webSocketHttpHeaders, uri).get(10, TimeUnit.SECONDS);
+            session.setTextMessageSizeLimit(1024 * 1024);
             String code = submission.getContent();
-            String id = Integer.toString(submission.getCodeHomeworkId());
+            String id = Integer.toString(submission.getCodeInfoId());
+            System.out.println(code);
+
+            code = code.replace("\"", "\\\"");
 
             code = code.replace("\n", "\\n");
-            System.out.println(code);
-            System.out.println(id);
-
+            code = code.replace("\t", "\\t");
             String json = "{\n" +
                     "  \"activity\": \"problem_submit_code\",\n" +
                     "  \"problem_id\": " + id + ",\n" +
@@ -102,17 +119,11 @@ public class CodeSubmitServiceImpl implements CodeSubmitService
                     "  \"program_time\": 0\n" +
                     "}";
 
+            System.out.println(json);
+
             TextMessage textMessage = new TextMessage(json);
 
             session.sendMessage(textMessage);
-
-//            do
-//            {
-//                map = wssHandler.getMap();
-//                System.out.println(map.size());
-//                if(map.containsKey("testcase_input")) break;
-//            }
-//            while(!map.containsKey("stderr"));
 
         }
         catch (InterruptedException | ExecutionException | TimeoutException | IOException e)

@@ -6,10 +6,7 @@ import com.bjtu.backend.pojo.Submission;
 import com.bjtu.backend.service.Code.CodeSubmitService;
 import lombok.var;
 import org.apache.ibatis.session.ResultContext;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
@@ -30,6 +27,12 @@ public class CodeSubmitController
     {
         var map = codeSubmitService.submit(submission);
         return Result.success(map);
+    }
+
+    @PostMapping("/update")
+    public Result<?> update(@RequestParam String h)
+    {
+        return Result.success(codeSubmitService.updateHeader(h));
     }
 
 }

@@ -269,8 +269,11 @@ public class SetStudentHomeworkScoreServiceImpl implements SetStudentHomeworkSco
                 if(!Objects.equals(hsId, homeworkStudentId)) continue;
 
                 String number = studentScore.getStudentNumber();
-                totalScore += (studentScore.getScore() * 1.0) - bias.get(number);
-                num ++;
+                if(bias.containsKey(number))
+                {
+                    totalScore += (studentScore.getScore() * 1.0) - bias.get(number);
+                    num ++;
+                }
             }
 
             totalScore = totalScore/num * studentRate + scoreByTeacher * teacherRate;

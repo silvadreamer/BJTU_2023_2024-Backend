@@ -87,7 +87,7 @@ public class SubmitHomeworkServiceImpl implements SubmitHomeworkService
 
         HomeworkStudent homeworkStudent = homeworkStudentMapper.selectOne(queryWrapper);
         String fileNames = homeworkStudent.getFileName();
-        if(fileNames == null) fileNames = fileName;
+        if(fileNames == null || fileNames.equals("")) fileNames = fileName;
         else fileNames = fileNames + "|" + fileName;
         homeworkStudent.setFileName(fileNames);
 

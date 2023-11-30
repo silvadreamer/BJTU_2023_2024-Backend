@@ -92,12 +92,13 @@ public class DeleteHomeworkServiceImpl implements DeleteHomeworkService
         HomeworkStudent homeworkStudent = homeworkStudentMapper.selectOne(queryWrapper);
         String files = homeworkStudent.getFileName();
         HashSet<String> uniqueParts = new HashSet<>();
-        if(files != null && files.contains("\\|"))
+        if(files != null && files.contains("|"))
         {
             String[] parts = files.split("\\|");
 
             for (String part : parts)
             {
+                if(part.equals("")) continue;
                 if(!part.equals(File)) uniqueParts.add(part.trim());
             }
 

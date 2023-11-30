@@ -35,7 +35,7 @@ public class AddAnswerServiceImpl implements AddAnswerService
         queryWrapper.eq("homework_id", homeworkId);
 
         QueryWrapper<Homework> queryWrapper1 = new QueryWrapper<>();
-        queryWrapper.eq("id", homeworkId);
+        queryWrapper1.eq("id", homeworkId);
         Homework homework = homeworkMapper.selectOne(queryWrapper1);
         homework.setAnswer(1);
         homeworkMapper.update(homework, queryWrapper1);

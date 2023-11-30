@@ -8,5 +8,6 @@ import java.util.concurrent.TimeoutException;
 
 public interface CodeSubmitService
 {
+    public String updateHeader(String s);
     Map<String, Object> submit(Submission submission) throws ExecutionException, InterruptedException, TimeoutException;
 }

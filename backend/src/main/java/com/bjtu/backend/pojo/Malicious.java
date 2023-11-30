@@ -1,5 +1,6 @@
 package com.bjtu.backend.pojo;
 
+
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -13,22 +14,19 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Submission
+public class Malicious
 {
     @TableId(type = IdType.AUTO)
     private Integer id;
+    @TableField("homework_id")
+    private Integer homeworkId;
     @TableField("student_number")
     private String studentNumber;
-    private String status;
-    @TableField("code_info_id")
-    private Integer codeInfoId;
-    private String content;
+    @TableField("homework_student_id")
+    private Integer homeworkStudentId;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date date;
-    @TableField("testcase_input")
-    private String testcaseInput;
-    @TableField("testcase_output")
-    private String testcaseOutput;
-    @TableField("user_output")
-    private String userOutput;
+    private String content;
+    @TableField("student_score_id")
+    private Integer studentScoreId;
 }

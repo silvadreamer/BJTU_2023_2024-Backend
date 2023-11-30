@@ -46,6 +46,7 @@ public class GetInfoHomeworkServiceImpl implements GetInfoHomeworkService
 
             for (String part : parts)
             {
+                if(part.equals(""))continue;
                 uniqueParts.add(part.trim());
             }
 
@@ -78,6 +79,7 @@ public class GetInfoHomeworkServiceImpl implements GetInfoHomeworkService
 
             for (String part : parts)
             {
+                if(part.equals("")) continue;
                 uniqueParts.add(part.trim());
             }
 
