@@ -4,6 +4,7 @@ import com.bjtu.backend.IO.Result;
 import com.bjtu.backend.pojo.Homework;
 import com.bjtu.backend.service.Homework.AddHomeworkService;
 import com.bjtu.backend.service.OSS.OSSUploadService;
+import lombok.var;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +22,15 @@ public class AddHomeworkController
         this.addHomeworkService = addHomeworkService;
         this.ossUploadService = ossUploadService;
     }
+
+    @PostMapping("/addCodeInfo")
+    public Result<?> addCodeInfo(@RequestBody Homework homework)
+    {
+        var map = addHomeworkService.addCodeHomework(homework);
+
+        return Result.success(map);
+    }
+
 
     @PostMapping("/addContent")
     public Result<?> addContent(@RequestBody Homework homework)

@@ -10,27 +10,18 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
-
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class Homework
+@NoArgsConstructor
+public class Similarity
 {
     @TableId(type = IdType.AUTO)
     private Integer id;
+    @TableField("student_number")
+    private String studentNumber;
     @TableField("class_id")
     private Integer classId;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
-    private Date start;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
-    private Date end;
+    @TableField("homework_id")
+    private Integer homeworkId;
     private String content;
-    private Integer resubmit;
-    @TableField("file_name")
-    private String fileName;
-    private String name;
-    private Integer score;
-    private Integer discussion;
-    private Integer answer;
-    private Integer type;
 }

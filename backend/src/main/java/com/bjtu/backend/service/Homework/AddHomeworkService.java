@@ -8,6 +8,8 @@ public interface AddHomeworkService
 {
     Map<String, Object> addHomework(Homework homework);
 
+    Map<String, Object> addCodeHomework(Homework homework);
+
     boolean checkHomework(int id);
 
     void addFileName(int id, String File);

@@ -1,7 +1,9 @@
 package com.bjtu.backend.service.impl.Homework;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.bjtu.backend.mapper.CodeInfoMapper;
 import com.bjtu.backend.mapper.HomeworkMapper;
+import com.bjtu.backend.pojo.CodeInfo;
 import com.bjtu.backend.pojo.Homework;
 import com.bjtu.backend.service.Homework.AddHomeworkService;
 import com.bjtu.backend.utils.TimeGenerateUtil;
@@ -9,17 +11,19 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Queue;
 
 @Service
 public class AddHomeworkServiceImpl implements AddHomeworkService
 {
     final HomeworkMapper homeworkMapper;
+    final CodeInfoMapper codeInfoMapper;
 
-    public AddHomeworkServiceImpl(HomeworkMapper homeworkMapper)
+    public AddHomeworkServiceImpl(HomeworkMapper homeworkMapper, CodeInfoMapper codeInfoMapper)
     {
         this.homeworkMapper = homeworkMapper;
+        this.codeInfoMapper = codeInfoMapper;
     }
-
 
     @Override
     public Map<String, Object> addHomework(Homework homework)
@@ -31,6 +35,28 @@ public class AddHomeworkServiceImpl implements AddHomeworkService
         System.out.println(TimeGenerateUtil.getTime() + " add homework");
 
         map.put("status", "success");
+        map.put("homework", homework);
+
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> addCodeHomework(Homework homework)
+    {
+        int type = homework.getType();
+        QueryWrapper<CodeInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", type);
+
+        CodeInfo codeInfo = codeInfoMapper.selectOne(queryWrapper);
+        String title = codeInfo.getTitle();
+        homework.setName(title);
+
+        homeworkMapper.insert(homework);
+
+        System.out.println(TimeGenerateUtil.getTime() + " add homework");
+
+        Map<String, Object> map = new HashMap<>();
+
         map.put("homework", homework);
 
         return map;

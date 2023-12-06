@@ -67,12 +67,21 @@ public class FindMaliciousScoreServiceImpl implements FindMaliciousScoreService
 
             miu = miu / studentScoreList.size();
 
+
+            int count = 0;
             for(StudentScore studentScore : studentScoreList)
             {
                 int score = studentScore.getScore();
                 if(score == -1) continue;
                 sigma += Math.pow(score - miu, 2);
+                count ++;
             }
+
+            sigma = Math.pow(sigma/count, 0.5);
+
+
+            System.out.println(miu);
+            System.out.println(sigma);
 
             //然后计算每个人的偏差值
             for(StudentScore studentScore : studentScoreList)
@@ -80,10 +89,10 @@ public class FindMaliciousScoreServiceImpl implements FindMaliciousScoreService
                 int score = studentScore.getScore();
                 if(score == -1) continue;
                 double z = (score - miu) / sigma;
-
-                System.out.println(z);
                 if(Math.abs(z) > bias)
                 {
+
+                    System.out.println(z);
                     Malicious malicious = new Malicious();
 
                     malicious.setHomeworkStudentId(studentScore.getHomeworkStudentId());

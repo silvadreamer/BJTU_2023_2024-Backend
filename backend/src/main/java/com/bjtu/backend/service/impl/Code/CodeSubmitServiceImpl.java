@@ -104,10 +104,20 @@ public class CodeSubmitServiceImpl implements CodeSubmitService
             String id = Integer.toString(submission.getCodeInfoId());
             System.out.println(code);
 
-            code = code.replace("\"", "\\\"");
 
-            code = code.replace("\n", "\\n");
-            code = code.replace("\t", "\\t");
+            code = code.replace("\\", "\\\\").replace("\"", "\\\"");
+            code = code.replace("\n", "\\n").replace("\r", "\\r").replace("\t", "\\t");
+            //code = code.replace("\t", "\\t");
+            //code = code.replaceAll("([^\r])\n", "$1\\n");
+
+            // 将双引号转义
+            //code = code.replace("\"", "\\\"");
+
+//            code = code.replace("\"", "\\\"");
+//
+            //code = code.replace("\n", "\\n");
+            //code = code.replace("\\\n", "\\\\n");
+
             String json = "{\n" +
                     "  \"activity\": \"problem_submit_code\",\n" +
                     "  \"problem_id\": " + id + ",\n" +
