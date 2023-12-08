@@ -42,7 +42,7 @@ public class CodeCheckServiceImpl implements CodeCheckService
         Map<String, Object> map = new HashMap<>();
 
         QueryWrapper<Code> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("code_homework_id", id);
+        queryWrapper.eq("code_info_id", id);
 
         List<Code> list = codeMapper.selectList(queryWrapper);
 

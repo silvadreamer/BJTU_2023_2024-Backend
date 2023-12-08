@@ -26,5 +26,4 @@ public class CodeCheckController
 
         return Result.success(map);
     }
-
 }
