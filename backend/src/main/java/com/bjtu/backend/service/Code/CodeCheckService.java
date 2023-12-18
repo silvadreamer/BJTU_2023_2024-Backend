@@ -6,4 +6,6 @@ import java.util.Map;
 public interface CodeCheckService
 {
     Map<String, Object> check(int id);
+
+    Map<String, Object> JPlagCheck(int id);
 }

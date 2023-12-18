@@ -26,4 +26,13 @@ public class CodeCheckController
 
         return Result.success(map);
     }
+
+
+    @PostMapping("/Jplag")
+    public Result<?> jplag(@RequestParam int id)
+    {
+        var map = codeCheckService.JPlagCheck(id);
+
+        return Result.success(map);
+    }
 }

@@ -37,7 +37,7 @@ public class CodeSubmitServiceImpl implements CodeSubmitService
     final SubmissionMapper submissionMapper;
     final CodeMapper codeMapper;
 
-    String header = "file_3132784_readed=\"\"; file_8687507_readed=\"\"; csrftoken=GiqRia4TB2SoHvRXuGuHjLuOhCQ4xTiqyJdGo2Fs6Jsope7M3iWBjaVH8rwaPTSi; sessionid=m05qrw1ybp4xogqd8svh1c90jc366d40; file_1061_readed=\"\"; file_4476078_readed=\"\"";
+    String header = "csrftoken=QU2NtOk1P9BGWVSS1OeTByS1bSIf7RFIT3J2JFv09w4V6B6dkRdfbVaJmHEsE7VO; sessionid=i3bx8506ewqtmpg76wwjcwkrsr1v82fl";
 
     public CodeSubmitServiceImpl(SubmissionMapper submissionMapper, CodeMapper codeMapper)
     {

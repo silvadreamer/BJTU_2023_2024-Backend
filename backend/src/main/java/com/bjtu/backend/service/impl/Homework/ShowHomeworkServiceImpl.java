@@ -94,7 +94,9 @@ public class ShowHomeworkServiceImpl implements ShowHomeworkService
         QueryWrapper<Homework> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("class_id", classID);
 
-        queryWrapper.select("id", "class_id", "end", "resubmit", "name", "start", "end", "discussion", "answer");
+        queryWrapper.select("id", "class_id", "end", "resubmit", "name", "start", "end", "discussion", "answer", "type");
+
+        queryWrapper.le("start", new Date());
 
         Page<Homework> page = new Page<>(pageNo, pageSize);
 
@@ -102,6 +104,7 @@ public class ShowHomeworkServiceImpl implements ShowHomeworkService
         List<Homework> origin_homework = homeworkMapper.selectPage(page, queryWrapper).getRecords();
         List<Homework> valid_homework = new ArrayList<>();
 
+        map.put("homeworkInfo", homeworkMapper.selectPage(page, queryWrapper));
         for(Homework homework : origin_homework)
         {
             Date startDate = homework.getStart();
@@ -114,7 +117,6 @@ public class ShowHomeworkServiceImpl implements ShowHomeworkService
         }
 
         //map.put("homeworkInfo", homeworkMapper.selectPage(page, queryWrapper));
-        map.put("homeworkInfo", valid_homework);
 
         map.put("total", valid_homework.size());
 
