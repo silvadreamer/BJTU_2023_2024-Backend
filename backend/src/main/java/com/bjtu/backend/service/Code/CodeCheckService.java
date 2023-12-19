@@ -8,4 +8,6 @@ public interface CodeCheckService
     Map<String, Object> check(int id);
 
     Map<String, Object> JPlagCheck(int id);
+
+    Map<String, Object> ac(int id);
 }

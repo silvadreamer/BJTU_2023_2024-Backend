@@ -3,6 +3,7 @@ package com.bjtu.backend.controller.Code;
 import com.bjtu.backend.IO.Result;
 import com.bjtu.backend.service.Code.CodeCheckService;
 import lombok.var;
+import org.apache.xmlbeans.impl.regex.REUtil;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,6 +33,14 @@ public class CodeCheckController
     public Result<?> jplag(@RequestParam int id)
     {
         var map = codeCheckService.JPlagCheck(id);
+
+        return Result.success(map);
+    }
+
+    @PostMapping("/getAc")
+    public Result<?> getAc(@RequestParam int id)
+    {
+        var map = codeCheckService.ac(id);
 
         return Result.success(map);
     }

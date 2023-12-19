@@ -3,6 +3,7 @@ package com.bjtu.backend.service.impl.Code;
 import cn.hutool.aop.interceptor.SpringCglibInterceptor;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bjtu.backend.mapper.CodeMapper;
+import com.bjtu.backend.mapper.SubmissionMapper;
 import com.bjtu.backend.pojo.Code;
 import com.bjtu.backend.service.Code.CodeCheckService;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -10,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.jplag.JPlag;
 import de.jplag.JPlagResult;
 import de.jplag.Language;
+import de.jplag.Submission;
 import de.jplag.exceptions.ExitException;
 import de.jplag.options.JPlagOptions;
 import de.jplag.reporting.reportobject.ReportObjectFactory;
@@ -51,6 +53,16 @@ public class CodeCheckServiceImpl implements CodeCheckService
         map.put("info", generateCpp(id));
         map.put("jplag", runJPlag());
 
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> ac(int id)
+    {
+        QueryWrapper<Code> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("code_info_id", id).select("student_number", "content");
+        Map<String, Object> map = new HashMap<>();
+        map.put("info", codeMapper.selectList(queryWrapper));
         return map;
     }
 
