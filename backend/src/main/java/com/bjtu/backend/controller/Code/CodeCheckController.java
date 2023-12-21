@@ -44,4 +44,13 @@ public class CodeCheckController
 
         return Result.success(map);
     }
+
+    @PostMapping("/copy")
+    public Result<?> setCopy(@RequestParam String studentNumber, @RequestParam int id)
+    {
+        var map = codeCheckService.setCopy(studentNumber, id);
+
+        return Result.success(map);
+    }
+
 }

@@ -64,6 +64,18 @@ public class ShowHomeworkController
         return Result.success(map);
     }
 
+    @GetMapping("/showUnSubmitted")
+    public Result<Map<String, Object>> showUnSubmittedList(@RequestParam(value = "classID") int classId,
+                                                         @RequestParam(value = "homeworkID") int homeworkId,
+                                                         @RequestParam(value = "pageNo", defaultValue = "1") Long pageNo,
+                                                         @RequestParam(value = "pageSize", defaultValue = "15") Long pageSize)
+    {
+
+        Map<String, Object> map = showHomeworkService.showUnSubmitted(classId, homeworkId, pageNo, pageSize);
+
+        return Result.success(map);
+    }
+
     @GetMapping("/showForStudent")
     public Result<Map<String, Object>> showForStudent(@RequestParam(value = "classID") int classID,
                                                       @RequestParam(value = "studentID") int studentID,

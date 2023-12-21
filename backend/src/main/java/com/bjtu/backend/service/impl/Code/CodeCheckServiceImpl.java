@@ -1,20 +1,15 @@
 package com.bjtu.backend.service.impl.Code;
 
-import cn.hutool.aop.interceptor.SpringCglibInterceptor;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.bjtu.backend.mapper.CodeInfoMapper;
 import com.bjtu.backend.mapper.CodeMapper;
+import com.bjtu.backend.mapper.ReminderMapper;
 import com.bjtu.backend.mapper.SubmissionMapper;
-import com.bjtu.backend.pojo.Code;
+import com.bjtu.backend.pojo.*;
 import com.bjtu.backend.service.Code.CodeCheckService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.jplag.JPlag;
-import de.jplag.JPlagResult;
-import de.jplag.Language;
-import de.jplag.Submission;
-import de.jplag.exceptions.ExitException;
-import de.jplag.options.JPlagOptions;
-import de.jplag.reporting.reportobject.ReportObjectFactory;
+import lombok.var;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -24,10 +19,17 @@ import java.util.*;
 public class CodeCheckServiceImpl implements CodeCheckService
 {
     final CodeMapper codeMapper;
+    final SubmissionMapper submissionMapper;
+    final ReminderMapper reminderMapper;
+    final CodeInfoMapper codeInfoMapper;
 
-    public CodeCheckServiceImpl(CodeMapper codeMapper)
+    public CodeCheckServiceImpl(CodeMapper codeMapper, SubmissionMapper submissionMapper, ReminderMapper reminderMapper, CodeInfoMapper codeInfoMapper)
     {
         this.codeMapper = codeMapper;
+        this.submissionMapper = submissionMapper;
+        this.reminderMapper = reminderMapper;
+
+        this.codeInfoMapper = codeInfoMapper;
     }
 
     @Override
@@ -37,7 +39,12 @@ public class CodeCheckServiceImpl implements CodeCheckService
         Map<String, Object> map = new HashMap<>();
 
         deleteFiles();
-        map.put("info", generateCpp(id));
+        var m = generateCpp(id);
+        if(m.containsKey("num"))
+        {
+            m.remove("num");
+            map.put("info", m);
+        }
         String url = runPerl();
         map.put("url", url);
 
@@ -50,7 +57,14 @@ public class CodeCheckServiceImpl implements CodeCheckService
         Map<String, Object> map = new HashMap<>();
 
         deleteFiles();
-        map.put("info", generateCpp(id));
+        var m = generateCpp(id);
+        if(m.containsKey("num"))
+        {
+            m.remove("num");
+            map.put("info", m);
+            return map;
+        }
+        map.put("info", m);
         map.put("jplag", runJPlag());
 
         return map;
@@ -66,6 +80,40 @@ public class CodeCheckServiceImpl implements CodeCheckService
         return map;
     }
 
+    @Override
+    public Map<String, Object> setCopy(String studentNumber, int id)
+    {
+        Reminder reminder = new Reminder();
+        QueryWrapper<Code> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("code_info_id", id).eq("student_number", studentNumber);
+        Code code = codeMapper.selectOne(queryWrapper);
+        Date now = new Date();
+
+        QueryWrapper<Submission> queryWrapper1 = new QueryWrapper<>();
+        queryWrapper1.eq("id", code.getSubmissionId());
+        Submission submission = submissionMapper.selectOne(queryWrapper1);
+        submission.setStatus("被判定为抄袭");
+        submissionMapper.update(submission, queryWrapper1);
+
+        QueryWrapper<CodeInfo> queryWrapper2 = new QueryWrapper<>();
+        queryWrapper2.eq("id", id);
+        CodeInfo codeInfo = codeInfoMapper.selectOne(queryWrapper2);
+        String title = codeInfo.getTitle();
+
+        String content = "你的代码作业" + title + "的代码作业与其他作业高度相似，被判定为抄袭！";
+
+        reminder.setDate(now);
+        reminder.setContent(content);
+        reminder.setTitle("代码作业警告");
+        reminder.setStudentNumber(code.getStudentNumber());
+        reminderMapper.insert(reminder);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("提醒", reminder);
+
+        return map;
+    }
+
 
     public Map<String, Object> generateCpp(int id)
     {
@@ -75,6 +123,8 @@ public class CodeCheckServiceImpl implements CodeCheckService
         queryWrapper.eq("code_info_id", id);
 
         List<Code> list = codeMapper.selectList(queryWrapper);
+
+        if(list.size() <= 2) map.put("num", 1);
 
         for(Code code : list)
         {
@@ -129,33 +179,43 @@ public class CodeCheckServiceImpl implements CodeCheckService
         }
     }
 
+    public void deleteResultFiles()
+    {
+        String cppFolderPath = "/root/results/";
+
+        File folder = new File(cppFolderPath);
+        File[] files = folder.listFiles();
+
+        if (files != null)
+        {
+            for (File file : files)
+            {
+                if (file.isFile())
+                {
+                    boolean deleted = file.delete();
+                    if (deleted)
+                    {
+                        System.out.println("Deleted file: " + file.getAbsolutePath());
+                    }
+                    else
+                    {
+                        System.out.println("Failed to delete file: " + file.getAbsolutePath());
+                    }
+                }
+            }
+        }
+        else
+        {
+            System.out.println("No files found in the folder: " + cppFolderPath);
+        }
+    }
+
     public JsonNode runJPlag()
     {
-//        Language language = new de.jplag.JPlag(new JPlagOptions(Language()));
-//        Language language = new de.jplag.java.Language();
-//        Set<File> submissionDirectories = new HashSet<>();
-//        submissionDirectories.add(new File("/root/cpp"));
-//        //File baseCode = new File("/path/to/baseCode");
-//        Set<File> files = new HashSet<>();
-//        JPlagOptions options = new JPlagOptions(language, submissionDirectories, files);
-//
-//        JPlag jplag = new JPlag(options);
-//        try {
-//            JPlagResult result = jplag.run();
-//
-//            // Optional
-//            ReportObjectFactory reportObjectFactory = new ReportObjectFactory();
-//            reportObjectFactory.createAndSaveReport(result, "/root/output");
-//        } catch (ExitException e) {
-//            // error handling here
-//            return "请联系管理员";
-//        }
-
+        deleteResultFiles();
         try
         {
-            ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c", "java -jar jplag-4.3.0-jar-with-dependencies.jar /root/cpp -l cpp -r /root/result -t 5");
-            //ProcessBuilder processBuilder = new ProcessBuilder("perl", "/root/moss.pl", "-l", "cc", "/root/cpp/*.cpp");
-            //ProcessBuilder processBuilder = new ProcessBuilder("xterm", "-e", "bash", "-c", command);
+            ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c", "java -jar jplag-4.3.0-jar-with-dependencies.jar /root/cpp -l cpp -r /root/results/result -t 5");
             Process process = processBuilder.start();
 
             // 获取外部进程的输入流
@@ -168,20 +228,7 @@ public class CodeCheckServiceImpl implements CodeCheckService
                 System.out.println(line);
             }
 
-//            try (InputStream errorStream = process.getErrorStream();
-//                 BufferedReader errorReader = new BufferedReader(new InputStreamReader(errorStream)))
-//            {
-//                String errorLine;
-//                while ((errorLine = errorReader.readLine()) != null)
-//                {
-//                    System.err.println(errorLine);
-//                }
-//            }
-//
-//            int exitCode = process.waitFor();
-//            System.out.println("Exit Code: " + exitCode);
-
-            ProcessBuilder processBuilder2 = new ProcessBuilder("bash", "-c", "unzip result.zip");
+            ProcessBuilder processBuilder2 = new ProcessBuilder("bash", "-c", "unzip /root/results/result.zip");
             processBuilder2.start();
 
             String path = "/root/overview.json";

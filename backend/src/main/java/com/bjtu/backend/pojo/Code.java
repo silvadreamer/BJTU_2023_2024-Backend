@@ -26,4 +26,6 @@ public class Code
     private Integer codeInfoId;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date date;
+    @TableField("submission_id")
+    private Integer SubmissionId;
 }

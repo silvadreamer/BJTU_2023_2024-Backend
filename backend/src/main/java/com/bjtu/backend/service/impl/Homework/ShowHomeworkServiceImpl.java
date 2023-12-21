@@ -2,38 +2,36 @@ package com.bjtu.backend.service.impl.Homework;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.bjtu.backend.mapper.ExcellentHomeworkMapper;
-import com.bjtu.backend.mapper.HomeworkMapper;
-import com.bjtu.backend.mapper.HomeworkReviewMapper;
-import com.bjtu.backend.mapper.HomeworkStudentMapper;
-import com.bjtu.backend.pojo.ExcellentHomework;
-import com.bjtu.backend.pojo.Homework;
-import com.bjtu.backend.pojo.HomeworkReview;
-import com.bjtu.backend.pojo.HomeworkStudent;
+import com.bjtu.backend.mapper.*;
+import com.bjtu.backend.pojo.*;
 import com.bjtu.backend.service.Homework.ShowHomeworkService;
 import com.bjtu.backend.utils.TimeGenerateUtil;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ShowHomeworkServiceImpl implements ShowHomeworkService
 {
     final HomeworkMapper homeworkMapper;
     final HomeworkStudentMapper homeworkStudentMapper;
+    final ClassStudentMapper classStudentMapper;
     final ExcellentHomeworkMapper excellentHomeworkMapper;
     final HomeworkReviewMapper homeworkReviewMapper;
 
 
     public ShowHomeworkServiceImpl(HomeworkMapper homeworkMapper, HomeworkStudentMapper homeworkStudentMapper,
                                    ExcellentHomeworkMapper excellentHomeworkMapper,
-                                   HomeworkReviewMapper homeworkReviewMapper)
+                                   HomeworkReviewMapper homeworkReviewMapper,
+                                   ClassStudentMapper classStudentMapper)
     {
         this.homeworkMapper = homeworkMapper;
         this.homeworkStudentMapper = homeworkStudentMapper;
         this.excellentHomeworkMapper = excellentHomeworkMapper;
         this.homeworkReviewMapper = homeworkReviewMapper;
+        this.classStudentMapper = classStudentMapper;
     }
 
 
@@ -83,6 +81,38 @@ public class ShowHomeworkServiceImpl implements ShowHomeworkService
         map.put("excellent", list);
 
         System.out.println(TimeGenerateUtil.getTime() + " get submitted homework list ");
+
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> showUnSubmitted(int classId, int homeworkId, Long pageNo, Long pageSize)
+    {
+        QueryWrapper<HomeworkStudent> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("class_id", classId).eq("homework_id", homeworkId);
+
+        // 查询已提交的作业学生列表
+        List<HomeworkStudent> submittedStudents = homeworkStudentMapper.selectList(queryWrapper);
+
+        // 获取已提交学生的学号列表
+        List<String> submittedStudentNumbers = submittedStudents.stream()
+                .map(HomeworkStudent::getStudentNumber)
+                .collect(Collectors.toList());
+
+        // 构造查询条件，排除已提交的学生
+        QueryWrapper<ClassStudent> notSubmittedQueryWrapper = new QueryWrapper<>();
+        notSubmittedQueryWrapper.eq("class_id", classId)
+                .notIn("student_id", submittedStudentNumbers);
+
+        // 分页查询未提交的学生列表
+        Page<ClassStudent> page = new Page<>(pageNo, pageSize);
+        Page<ClassStudent> notSubmittedStudentsPage = classStudentMapper.selectPage(page, notSubmittedQueryWrapper);
+
+        // 构造返回结果的Map
+        Map<String, Object> map = new HashMap<>();
+        map.put("notSubmittedInfo", notSubmittedStudentsPage);
+
+        System.out.println(TimeGenerateUtil.getTime() + " get not submitted homework list");
 
         return map;
     }

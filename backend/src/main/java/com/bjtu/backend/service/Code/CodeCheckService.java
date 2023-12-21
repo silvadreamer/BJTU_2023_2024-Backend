@@ -10,4 +10,6 @@ public interface CodeCheckService
     Map<String, Object> JPlagCheck(int id);
 
     Map<String, Object> ac(int id);
+
+    Map<String, Object> setCopy(String studentNumber, int id);
 }

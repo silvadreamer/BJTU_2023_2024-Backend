@@ -19,5 +19,7 @@ public interface ShowHomeworkService
 
     Map<String, Object> showSubmitted(int classId, int homeworkId, Long pageNo, Long pageSize);
 
+    Map<String, Object> showUnSubmitted(int classId, int homeworkId, Long pageNo, Long pageSize);
+
     Map<String, Object> showForStudent(int classID, int studentID, Long pageNo, Long pageSize);
 }
