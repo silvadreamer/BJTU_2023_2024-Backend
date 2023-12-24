@@ -208,6 +208,26 @@ public class CodeCheckServiceImpl implements CodeCheckService
         {
             System.out.println("No files found in the folder: " + cppFolderPath);
         }
+
+//        String rootDirectoryPath = "/root/"; // 根目录路径
+//        folder = new File(rootDirectoryPath);
+//        files = folder.listFiles();
+//        if (files != null)
+//        {
+//            for (File file : files)
+//            {
+//                if(file.getName().equals("overview.json")) continue;
+//                if (file.getName().endsWith(".json"))
+//                {
+//                    if (file.delete())
+//                    {
+//                        System.out.println("Deleted file: " + file.getAbsolutePath());
+//                    } else {
+//                        System.out.println("Failed to delete file: " + file.getAbsolutePath());
+//                    }
+//                }
+//            }
+//        }
     }
 
     public JsonNode runJPlag()
@@ -215,6 +235,7 @@ public class CodeCheckServiceImpl implements CodeCheckService
         deleteResultFiles();
         try
         {
+
             ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c", "java -jar jplag-4.3.0-jar-with-dependencies.jar /root/cpp -l cpp -r /root/results/result -t 5");
             Process process = processBuilder.start();
 
@@ -227,6 +248,7 @@ public class CodeCheckServiceImpl implements CodeCheckService
             {
                 System.out.println(line);
             }
+
 
             ProcessBuilder processBuilder2 = new ProcessBuilder("bash", "-c", "unzip /root/results/result.zip");
             processBuilder2.start();

@@ -74,6 +74,7 @@ public class WssHandler extends AbstractWebSocketHandler
                     code = codeMapper.selectOne(queryWrapper);
                     code.setContent(submission.getContent());
                     code.setDate(submission.getDate());
+                    System.out.println("id" + submission.getId());
                     code.setSubmissionId(submission.getId());
                     codeMapper.update(code, queryWrapper);
                 }
@@ -84,6 +85,7 @@ public class WssHandler extends AbstractWebSocketHandler
                     code.setCodeInfoId(submission.getCodeInfoId());
                     code.setContent(submission.getContent());
                     code.setDate(submission.getDate());
+                    code.setSubmissionId(submission.getId());
                     codeMapper.insert(code);
                 }
             }

@@ -62,6 +62,8 @@ public class CodeSubmitServiceImpl implements CodeSubmitService
         Date now = new Date();
         submission.setDate(now);
         submissionMapper.insert(submission);
+        QueryWrapper<Submission> queryWrapper = new QueryWrapper<>();
+
 
         wssHandler = new WssHandler(submission, submissionMapper, codeMapper);
         var map = wss(submission);
